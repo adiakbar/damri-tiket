@@ -1,0 +1,67 @@
+PR
+------
+
+Pesan Tiket
+===============
+1. Validasi ketika memasukkan tanggal dan trayek (required) => rule laravel aja
+2. Validasi ketika memasukkan data penumpang (jquery)
+3. Menghitung sebelum create pesanan
+   jadi, apabila ada 2 operator memasukkan data di kursi, kode_trayek, dan tanggal yang sama keluarkan pesan "kursi nomor sekian telah di pesan penumpang lain"
+4. ketika multiple select kursi penumpang di buat perulangan create
+5. buat box konten saat ini sedang pesan di bis, trayek, dan tanggal berapa (dibawah box pilih tanggal)
+6. Buat Algoritma numeratur (DMR000001 - DMR999999)
+7. Buat Cetak tiket (ukuran printer roll - plus barcode)
+
+Data Pesanan
+================
+1. Buat aja dulu mockup data pesanan menggunakan data table
+2. Ada menu searching berdasarkan tanggal dan trayek tujuan
+3. Buat proses change booking to cash
+4. Buat proses batal tiket
+5. Buat proses pindah kursi pesanan (edit penumpang)
+
+Trayek (create, update, delete) == Root
+==============
+1. Detail trayek di buat menu select box aja biar ndak semak macam itu
+2. Di buat proses tambah, edit, delete trayek
+3. Di buat proses tambah, edit, delete detail trayek
+4. Buat Algoritma Kode Trayek (alias_jenis_bis+alias_asal+jam+alias_tujuan)
+
+
+Unit Bis
+==============
+1. Buat mockup data bis (bis, jenis bis, bis default, bis berangkat)
+2. Buat proses tambah, edit, delete Bis
+3. Buat proses tambah, edit, delete Jenis Bis
+4. Buat proses tambah, edit, delete Bis Default
+5. Buat proses tambah, edit, delete Bis Berangkat
+
+Petugas
+==============
+1. Crud Petugas
+2. level (root, superadmin,admin, petugas)
+
+Log
+==============
+1. Mencatat semua aktivitas kecuali root (tersedia hanya si superadmin)
+
+Profile
+==============
+1. Ganti password saja
+
+Halaman Login
+===============
+Atur yang bagus jak lah, bukan pake email tapi pake username
+
+
+V2 (Untuk Startup)
+------------------
+1. Pelajari Membuat midleware sendiri
+2. Pelajari UAC (User Access Control) Laravel
+3. Pelajari OAUTH2 (supaya bisa dafta via facebook, twiter, g+)
+4. Pelajari Reset Password via email
+
+
+
+
+

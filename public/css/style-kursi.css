@@ -1,0 +1,88 @@
+.container-kursi{
+	width: 200px;
+	margin: 0 auto;
+}
+.row-front{
+	margin-bottom: 10px;
+}
+.box-kursi{
+	float: left;
+	margin: 3% 2%;
+	background: #4CAF50;
+	color: #fff;
+	text-align: center;
+	padding-top: 7px;
+}
+.foreign-bus,
+.executive-bus{
+	width: 18%;
+	cursor: pointer;
+}
+.royal-bus{
+	width: 23%;
+	cursor: pointer;
+}
+.ekonomi-bus{
+	width: 15%;
+	cursor: pointer;
+}
+.box-pintu{
+	float: left;
+	margin: 2% 1%;
+	padding-top: 10px;
+}
+.sopir{
+	float: right;
+	margin-right: 10%;
+	cursor: default;
+	text-align: center;
+	background: #737373;
+	color: #fff;
+	padding-top: 7px;
+	border-radius: 50%;
+	/*width: 20%;*/
+}
+.toilet{
+	margin-right: 18%;
+	width: 25%;
+	background: #737373;
+}
+.toilet-executive{
+	float: right;
+	width: 25%;
+	background: #737373;
+}
+.space-kursi{
+	margin-left: 13%;
+}
+.space-kursi-royal{
+	margin-left: 20%;
+}
+.space-kursi-ekonomi{
+	margin-left: 41%;
+}
+.space-kursi-ekonomi-pintu{
+	margin-left: 14%;
+}
+.end-space-kursi{
+	margin-left: 35%;
+}
+.end-space-kursi-royal{
+	margin-left: 1%;
+}
+.end-ekonomi-bus{
+	width: 15%;
+}
+.selected{
+	background: #1B5E20;
+}
+.cash{
+	background: #F44336;
+}
+.booking{
+	background: #FFD600;
+	color: #000;
+}
+.clear{
+	clear: both;
+}
