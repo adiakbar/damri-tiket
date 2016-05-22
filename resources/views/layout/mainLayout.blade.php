@@ -10,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugin/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugin/bootstrap-select/dist/css/bootstrap-select.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('plugin/bootstrap-clockpicker/dist/bootstrap-clockpicker.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 
 </head>
@@ -86,6 +87,7 @@
 	<script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugin/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugin/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugin/bootstrap-clockpicker/dist/bootstrap-clockpicker.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugin/jquery.cycle.all.js') }}"></script>
 	@yield('script')
 
