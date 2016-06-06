@@ -148,7 +148,7 @@ a:hover {
 	display: none;
 }
 .highlight {
-	background: #7f8c8d;
+	background: #bdc3c7;
 }
 .booking{
 	background: #f39c12;
@@ -160,6 +160,23 @@ a:hover {
 	width: 100% !important;
 	/*margin-left: 10px !important;*/
 }
+.cover {
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	background: rgba(0,0,0,0.5);
+	top: 0;
+	left: 0;
+	z-index: 1;
+	display: none;
+}
+.icon-loading{
+	position: absolute;
+	z-index: 2;
+	color: #fff;
+	left: 50%;
+	top: 100px;
+}
 .title-trayek {
 	font-weight: 600;
 	font-size: 16px;
@@ -167,4 +184,27 @@ a:hover {
 	display: inline;
 	color: #fff;
 	padding: 5px 10px;
+}
+.text-label {
+	font-weight: 700;
+	margin-bottom: 0;
+}
+.text-labelbis {
+	font-size: 20px;
+	font-weight: 700;
+	display: inline-block;
+	color: #0D47A1;
+}
+.text-labelkursi {
+	font-size: 20px;
+	float: right;
+	font-weight: 700;
+	background: #0D47A1;
+	color: #ffffff;
+	padding: 5px;
+}
+
+.box-tiket-cetak {
+	width: 300px;
+	/*outline: 1px solid red;*/
 }

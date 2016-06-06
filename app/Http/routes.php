@@ -13,6 +13,9 @@
 
 Route::get('/', 'TiketController@index');
 Route::post('/pesan-tiket', 'TiketController@pesanTiket');
+Route::post('/bayar-tiket', 'TiketController@bayarTiket');
+Route::get('/cetak-tiket', 'TiketController@cetakTiket');
+
 
 Route::get('trayek', 'TrayekController@index');
 

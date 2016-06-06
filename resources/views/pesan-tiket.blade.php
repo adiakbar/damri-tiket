@@ -30,6 +30,16 @@
 			</form>
 		</div>
 		<!-- end-box-content -->
+		
+		@if(isset($data_trayek))
+		<div class="box-content">
+			<h4 style="color: #3498db;">Trayek</h4>
+			<p><b>Tanggal</b> : {{ $tanggal }}</p>
+			<p><b>Harga</b> : {{ "Rp ".number_format($data_trayek->harga,0,',','.') }}</p>
+			<p style="margin-bottom:0;"><b>{{ $data_trayek->jenis_bis->jenis.' | '. substr($data_trayek->jadwal,0,-3).' WIB' }}</b></p>
+			<p style="font-size:12px;">{{ $data_trayek->stasiun_asal.' - '.$data_trayek->stasiun_tujuan }}</p>
+		</div>
+		@endif
 	</div>
 	<!-- end-col-md-4 -->
 
@@ -64,34 +74,32 @@
 					
 					<div class="col-md-6">
 						<form style="margin-top: 15px;" action="pesan-tiket" method="POST">
+							@if(session('warning'))
+								<div class="alert alert-danger" style="padding: 5px;">
+							        {{ session('warning') }}
+							    </div>
+							@endif
 							<div class="form-group">
 						    <label for="">Nomor Kursi : </label>
 						    <input type="text" class="form-control" disabled id="nomor-kursi-disable">
 						  </div>
 							<div class="form-group">
 						    <label for="">Nama : </label>
-						    <input type="text" name="penumpang" class="form-control" placeholder="Nama">
+						    <input type="text" name="penumpang" class="form-control" placeholder="Nama" value="{{ Request::old('penumpang') }}">
 						  </div>
 						  <div class="form-group">
 						    <label for="">Telephone : </label>
-						    <input type="text" name="telephone" class="form-control" placeholder="Telephone">
+						    <input type="text" name="telephone" class="form-control" placeholder="Telephone" value="{{ Request::old('telephone') }}">
 						  </div>
 						  <div class="form-group">
 						    <label for="">Passport : </label>
-						    <input type="text" name="passport" class="form-control" placeholder="Passport">
+						    <input type="text" name="passport" class="form-control" placeholder="Passport" value="{{ Request::old('passport') }}">
 						  </div>
 						  <div class="form-group">
 						    <label for="">Keterangan : </label>
-						    <textarea name="keterangan" class="form-control"></textarea>
+						    <textarea name="keterangan" class="form-control">{{ Request::old('keterangan') }}</textarea>
 						  </div>
-						  <div class="radio" style="margin-bottom:20px;">
-						  	<label style="margin-right:20px;">
-						  		<input type="radio" name="status" value="cash" checked=""> Cash
-						  	</label>
-						  	<label>
-						  		<input type="radio" name="status" value="booking"> Booking
-						  	</label>
-						  </div>
+						  
 						  <input type="hidden" name="nomor_kursi" id="nomor-kursi">
 						  <input type="hidden" name="kode_trayek">
 						  <input type="hidden" name="nomor_bis">
@@ -99,6 +107,7 @@
 						  <input type="hidden" name="tanggal" value="{{ $tanggal }}">
 						  <input type="hidden" name="jenis_bis_trayek_id" value="{{ $jenis_bis_trayek_id }}">
 						  <input type="hidden" name="petugas_id" value="1">
+						  <input type="hidden" name="status" value="booking">
 						  <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 						  <input type="submit" class="btn btn-warning" value="Pesan Tiket">
@@ -108,7 +117,7 @@
 				</div>
 				<!-- end row -->
 			@else
-				<h4>Tentukan Trayek dan Bis Terlebih Dahulu</h4>
+				<h4 style="color: #3498db;">Tentukan Trayek dan Bis Terlebih Dahulu</h4>
 			@endif
 
 		</div>

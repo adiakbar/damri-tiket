@@ -89,6 +89,9 @@
 	<script type="text/javascript" src="{{ asset('plugin/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugin/bootstrap-clockpicker/dist/bootstrap-clockpicker.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugin/jquery.cycle.all.js') }}"></script>
+	<script type="text/javascript">
+		var base_url = window.location.origin;
+	</script>
 	@yield('script')
 
 </body>

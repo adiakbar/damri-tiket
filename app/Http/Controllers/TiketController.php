@@ -35,7 +35,9 @@ class TiketController extends Controller
             $jenis_bis_trayek_id = $request->bis_trayek;
             $tanggal = Convert::tgl_ind_to_eng($request->tanggal);
 
-            $kode_trayek = JenisBisTrayek::find($jenis_bis_trayek_id)->kode_trayek;
+            $data_trayek = JenisBisTrayek::find($jenis_bis_trayek_id);
+            $kode_trayek = $data_trayek->kode_trayek;
+
 
             // cek pada tanggal tersebut sudah ada di tetapkan bis yang berangkat belum
             $hitung_bis_berangkat = BisBerangkat::where('tanggal', '=', $tanggal)
@@ -55,9 +57,6 @@ class TiketController extends Controller
                 $data['bis'] = $bis_berangkat;
             }
 
-
-            
-
             // $bis_default[0]->jenis_bis_trayek->jenis_bis->slug_jenis;
 
             // status kursi
@@ -72,6 +71,7 @@ class TiketController extends Controller
 
             
             $data['tanggal'] = $tanggal;
+            $data['data_trayek'] = $data_trayek;
             $data['jenis_bis_trayek_id'] = $jenis_bis_trayek_id;
         }
        
@@ -83,10 +83,85 @@ class TiketController extends Controller
     public function pesanTiket(Request $request)
     {
         $data = $request->all();
-        
-        Pesanan::create($data);
+        unset($data['nomor_kursi']);
 
-        return redirect()->back();
+        $penumpang = $request->penumpang;
+        $telephone = $request->telephone;
+        $passport = $request->passport;
+        $tanggal = $request->tanggal;
+        $status = $request->status;
+        $keterangan = $request->keterangan;
+        $petugas_id = $request->petugas_id;
+        $jenis_bis_trayek_id = $request->jenis_bis_trayek_id;
+        $kode_trayek = $request->kode_trayek;
+        $nomor_bis = $request->nomor_bis;
+        $nomor_kursi = explode(',', $request->nomor_kursi);
+        $bis_id = $request->bis_id;
+
+        $hitung_pesanan = Pesanan::where('tanggal', '=', $tanggal)
+                                 ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
+                                 ->where('kode_trayek', '=', $kode_trayek)
+                                 ->where('nomor_bis', '=', $nomor_bis)
+                                 ->whereIn('nomor_kursi', $nomor_kursi)
+                                 ->count();
+        
+        if($hitung_pesanan == 0)
+        {
+            foreach($nomor_kursi as $key => $kursi)
+            {
+                $data_pesanan[$key] = $data;
+                $data_pesanan[$key]['nomor_kursi'] = $kursi; 
+            
+                Pesanan::create($data_pesanan[$key]);
+            }
+            
+            $pesanan = Pesanan::where('tanggal', '=', $tanggal)
+                              ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
+                              ->where('kode_trayek', '=', $kode_trayek)
+                              ->where('nomor_bis', '=', $nomor_bis)
+                              ->whereIn('nomor_kursi', $nomor_kursi)
+                              ->get();
+            // print_r($pesanan);
+            return view('bayar-tiket')->with('pesanan', $pesanan);
+        }
+        else
+        {
+            return back()->with('warning', 'Kursi '.$request->nomor_kursi.' sudah ada yang memesan')
+                             ->withInput();
+        }
     }
 
+    public function bayarTiket(Request $request)
+    {
+        $pesanan_id = $request->pesanan_id;
+
+        $id = explode(',', $pesanan_id);
+        $numeratur = 'DMR000000';
+
+        foreach($id as $value)
+        {
+            $jmlKar = strlen($value);
+            $cutNumeratur = substr($numeratur, '0', -$jmlKar);
+            $newNumeratur = $cutNumeratur.''.$value;
+
+            $pesan = Pesanan::find($value);
+            $pesan->numeratur = $newNumeratur;
+            $pesan->status = 'cash';
+            $pesan->save();
+
+            $data[] = array('id' => $value, 'numeratur' => $newNumeratur, 'status' => 'Lunas');
+        }
+        return response()->json($data);
+    }
+
+    public function cetakTiket(Request $request)
+    {
+        $pesanan_id = $request->pesanan_id;
+
+        $id = explode(',', $pesanan_id);
+        $pesanan = Pesanan::whereIn('id', $id)->get();
+
+        // return "helo";
+        return view('cetak-tiket')->with('pesanan', $pesanan);
+    }
 }

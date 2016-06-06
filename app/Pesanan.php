@@ -11,4 +11,9 @@ class Pesanan extends Model
     					   'numeratur', 'petugas_id', 'jenis_bis_trayek_id', 'kode_trayek', 'nomor_bis', 
     					   'nomor_kursi', 'bis_id'];
     protected $hidden = ['created_at', 'updated_at'];
+
+    public function jenis_bis_trayek()
+    {
+    	return $this->belongsTo('App\JenisBisTrayek');
+    }
 }
