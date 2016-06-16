@@ -16,6 +16,69 @@ a:hover {
 	margin: 0;
 }
 
+/* ===============
+   LOGIN
+================ */
+.section-login {
+	background-image: url('../img/damri-royal.jpg');
+	background-size: cover;
+	height: 330px;
+}
+.cover-login {
+	background-color: rgba(12,78,126,0.7);
+	height: 330px;
+}
+.form-login {
+	background: #ffffff;
+	margin-top: 40px;
+	padding: 30px;
+	border-radius: 3px;
+	border-bottom: 5px solid #FFCA0A;
+}
+.form-login .form-control {
+	border: none;
+	box-shadow: none;
+	border-bottom: 1px solid rgba(12,78,126,0.7);
+}
+.login-banner {
+	margin-top: 70px;
+}
+.login-banner h2 {
+	font-size: 50px;
+	font-weight: 700;
+	color: #FFCA0A;
+}
+.login-banner h4 {
+	color: #ffffff;
+}
+.partner {
+	float: right;
+	padding-top: 50px;
+}
+.section-caption-login {
+	padding-top: 20px;
+	text-align: center;
+}
+.section-caption-login .fa {
+	font-size: 30px;
+	background-color: #0D47A1;
+	padding: 15px;
+	border-radius: 50%;
+	color: #fff;
+}
+.section-caption-login h4 {
+	font-size: 16px;
+	font-weight: 600;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	border-bottom: 1px solid rgba(12,78,126,0.7);
+	/*border-top: 1px solid rgba(12,78,126,0.7);*/
+}
+.section-caption-login p {
+	font-size: 12px;
+}
+
+
 #sidebar {
 	width: 100px;
 	height: 100%;
@@ -27,7 +90,7 @@ a:hover {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	margin-top: 70px;
+	margin-top: 90px;
 }
 .sidebar-list-link {
 	display: block;
@@ -48,7 +111,7 @@ a:hover {
 }
 
 #header {
-	height: 70px;
+	height: 90px;
 	background: #fff;
 	margin-left: 100px;
 	padding-left: 20px;
@@ -56,21 +119,22 @@ a:hover {
 }
 .box-logo {
 	display: inline-block;
-	width: 300px;
+	width: 500px;
 }
 .box-logo-image {
 	float: left;
 	margin-right: 10px;
 }
 .box-logo-title {
-	font-size: 18px;
+	font-size: 20px;
 	margin: 0;
-	padding-top: 5px;
+	/*padding-top: 5px;*/
 	font-weight: 700;
 	color: #0D47A1;
 }
 .box-logo-caption {
-	font-size: 12px;
+	font-size: 14px;
+	padding-top: 3px;
 }
 .box-user{
 	float: right;
@@ -184,6 +248,7 @@ a:hover {
 	display: inline;
 	color: #fff;
 	padding: 5px 10px;
+	margin-bottom: 10px;
 }
 .text-label {
 	font-weight: 700;
@@ -203,8 +268,77 @@ a:hover {
 	color: #ffffff;
 	padding: 5px;
 }
+.text-numeratur {
+	text-align: center;
+	font-weight: 700;
+	font-size: 16px;
+	text-decoration: underline;
+}
+.box-detail-bis {
+	outline: 1px solid #000; 
+	width: 150px; 
+	margin: 0 auto; 
+	text-align:center;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+.text-nomor-bis {
+	font-size: 40px;
+	line-height: 40px;
+}
+.text-jenis-bis {
+	font-size: 18px;
+	font-weight: 700;
+}
+.text-keterangan {
+	font-size: 12px;
+	text-align: center;
+}
 
 .box-tiket-cetak {
 	width: 300px;
 	/*outline: 1px solid red;*/
+}
+.form-inline .form-group {
+	margin-right: 10px;
+}
+.form-inline .radio,
+.form-inline .checkbox {
+	/*display: block;*/
+	margin-right: 20px;
+	margin-top: 10px;
+}
+.form-inline .radio b,
+.form-inline .checkbox b {
+	margin-left: 5px;
+}
+.modal-content {
+	border-bottom: 5px solid #FFCA0A;
+}
+.tr-click {
+	cursor: pointer;
+}
+.text-error {
+	font-style: 12px;
+	color: #f4645f;
+	/*margin-bottom: 0;*/
+}
+.span-required {
+	font-size: 10px;
+	color: #f4645f;	
+}
+.box-jml-tiket {
+	outline: 1px solid #3498db;
+	height: 110px;
+	text-align: center;
+	margin-bottom: 25px;
+}
+.box-jml-tiket .angka {
+	background: #3498db;
+	text-align: center;
+	font-size: 40px;
+	color: #fff;
+}
+.box-jml-tiket .trayek {
+	font-size: 10px;
 }

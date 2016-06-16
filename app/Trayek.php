@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Trayek extends Model {
 
 	protected $table = 'trayek';
-    protected $fillable = ['asal', 'tujuan', 'alias_alas', 'alias_tujuan', 'alias', 'slug_alias'];
+    protected $fillable = ['asal', 'tujuan', 'alias_asal', 'alias_tujuan', 'alias', 'slug_alias'];
     protected $hidden = ['created_at'];
 
-    public function setUpdatedAt($value){}
+    // public function setUpdatedAt($value){}
+
+    public function getUpdatedAtColumn() {
+        return null;
+    }
 
     public function jenis_bis_trayek()
     {

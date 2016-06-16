@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class JenisBisTrayek extends Model {
 
 	protected $table = 'jenis_bis_trayek';
-    protected $fillable = ['trayek_id', 'jenis_bis_id', 'harga', 'jadwal'];
+    protected $fillable = ['trayek_id', 'jenis_bis_id', 'harga', 'jadwal', 'stasiun_asal', 'stasiun_tujuan', 'kode_trayek'];
     protected $hidden = ['trayek_id','created_at'];
 
-    public function setUpdatedAt($value){}
+    // public function setUpdatedAt($value){}
+
+    public function getUpdatedAtColumn() {
+        return null;
+    }
 
     public function trayek()
     {
@@ -30,6 +34,11 @@ class JenisBisTrayek extends Model {
     public function bis_berangkat()
     {
         return $this->hasMany('App\BisBerangkat');
+    }
+
+    public function getJadwalAttribute($value)
+    {
+        return substr($value,0,-3);
     }
 
 }

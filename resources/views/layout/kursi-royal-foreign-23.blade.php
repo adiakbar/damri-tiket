@@ -1,90 +1,90 @@
-<div class="container-kursi" data-kode-trayek="{{ $value->kode_trayek }}" data-nomor-bis="{{ $value->nomor_bis }}" data-bis-id="{{ $value->bis_id }}">
-	<h3 class="bus-title">{{ $value->nomor_bis }}</h3>
+<div class="container-kursi" data-kode-trayek="{{ $bis->kode_trayek }}" data-nomor-bis="{{ $bis->nomor_bis }}" data-bis-id="{{ $bis->bis_id }}">
+	<h3 class="bus-title">{{ $bis->nomor_bis }}</h3>
 	<div class="baris">
 		<div class="pintu">Pintu Depan</div>
 		<div class="supir"><i class="fa fa-tachometer"></i></div>
 	</div>
 	<!-- kursi 1 -->
 	<div class="baris">
-		<div class="kursi space @if(isset($kursi[$value->nomor_bis]['1A'])) {{$kursi[$value->nomor_bis]['1A']}} @endif ">
+		<div class="kursi space @if(isset($kursi[$bis->nomor_bis]['1A'])) {{$kursi[$bis->nomor_bis]['1A']}} @endif ">
 			<input type="checkbox" value="1A" name="kursi[]" class="cek-kursi">1A
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['1B'])) {{$kursi[$value->nomor_bis]['1B']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['1B'])) {{$kursi[$bis->nomor_bis]['1B']}} @endif">
 			<input type="checkbox" value="1B" name="kursi[]" class="cek-kursi">1B
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['1C'])) {{$kursi[$value->nomor_bis]['1C']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['1C'])) {{$kursi[$bis->nomor_bis]['1C']}} @endif">
 			<input type="checkbox" value="1C" name="kursi[]" class="cek-kursi">1C
 		</div>
 	</div>
 	<!-- kursi 2 -->
 	<div class="baris">
-		<div class="kursi space @if(isset($kursi[$value->nomor_bis]['2A'])) {{$kursi[$value->nomor_bis]['2A']}} @endif">
+		<div class="kursi space @if(isset($kursi[$bis->nomor_bis]['2A'])) {{$kursi[$bis->nomor_bis]['2A']}} @endif">
 			<input type="checkbox" value="2A" name="kursi[]" class="cek-kursi">2A
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['2B'])) {{$kursi[$value->nomor_bis]['2B']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['2B'])) {{$kursi[$bis->nomor_bis]['2B']}} @endif">
 			<input type="checkbox" value="2B" name="kursi[]" class="cek-kursi">2B
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['2C'])) {{$kursi[$value->nomor_bis]['2C']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['2C'])) {{$kursi[$bis->nomor_bis]['2C']}} @endif">
 			<input type="checkbox" value="2C" name="kursi[]" class="cek-kursi">2C
 		</div>
 	</div>
 	<!-- kursi 3 -->
 	<div class="baris">
-		<div class="kursi space @if(isset($kursi[$value->nomor_bis]['3A'])) {{$kursi[$value->nomor_bis]['3A']}} @endif">
+		<div class="kursi space @if(isset($kursi[$bis->nomor_bis]['3A'])) {{$kursi[$bis->nomor_bis]['3A']}} @endif">
 			<input type="checkbox" value="3A" name="kursi[]" class="cek-kursi">3A
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['3B'])) {{$kursi[$value->nomor_bis]['3B']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['3B'])) {{$kursi[$bis->nomor_bis]['3B']}} @endif">
 			<input type="checkbox" value="3B" name="kursi[]" class="cek-kursi">3B
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['3C'])) {{$kursi[$value->nomor_bis]['3C']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['3C'])) {{$kursi[$bis->nomor_bis]['3C']}} @endif">
 			<input type="checkbox" value="3C" name="kursi[]" class="cek-kursi">3C
 		</div>
 	</div>
 	<!-- kursi 4 -->
 	<div class="baris">
-		<div class="kursi space @if(isset($kursi[$value->nomor_bis]['4A'])) {{$kursi[$value->nomor_bis]['4A']}} @endif">
+		<div class="kursi space @if(isset($kursi[$bis->nomor_bis]['4A'])) {{$kursi[$bis->nomor_bis]['4A']}} @endif">
 			<input type="checkbox" value="4A" name="kursi[]" class="cek-kursi">4A
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['4B'])) {{$kursi[$value->nomor_bis]['4B']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['4B'])) {{$kursi[$bis->nomor_bis]['4B']}} @endif">
 			<input type="checkbox" value="4B" name="kursi[]" class="cek-kursi">4B
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['4C'])) {{$kursi[$value->nomor_bis]['4C']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['4C'])) {{$kursi[$bis->nomor_bis]['4C']}} @endif">
 			<input type="checkbox" value="4C" name="kursi[]" class="cek-kursi">4C
 		</div>
 	</div>
 	<!-- kursi 5 -->
 	<div class="baris">
-		<div class="kursi space @if(isset($kursi[$value->nomor_bis]['5A'])) {{$kursi[$value->nomor_bis]['5A']}} @endif">
+		<div class="kursi space @if(isset($kursi[$bis->nomor_bis]['5A'])) {{$kursi[$bis->nomor_bis]['5A']}} @endif">
 			<input type="checkbox" value="5A" name="kursi[]" class="cek-kursi">5A
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['5B'])) {{$kursi[$value->nomor_bis]['5B']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['5B'])) {{$kursi[$bis->nomor_bis]['5B']}} @endif">
 			<input type="checkbox" value="5B" name="kursi[]" class="cek-kursi">5B
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['5C'])) {{$kursi[$value->nomor_bis]['5C']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['5C'])) {{$kursi[$bis->nomor_bis]['5C']}} @endif">
 			<input type="checkbox" value="5C" name="kursi[]" class="cek-kursi">5C
 		</div>
 	</div>
 	<!-- kursi 6 -->
 	<div class="baris">
-		<div class="kursi space @if(isset($kursi[$value->nomor_bis]['6A'])) {{$kursi[$value->nomor_bis]['6A']}} @endif">
+		<div class="kursi space @if(isset($kursi[$bis->nomor_bis]['6A'])) {{$kursi[$bis->nomor_bis]['6A']}} @endif">
 			<input type="checkbox" value="6A" name="kursi[]" class="cek-kursi">6A
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['6B'])) {{$kursi[$value->nomor_bis]['6B']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['6B'])) {{$kursi[$bis->nomor_bis]['6B']}} @endif">
 			<input type="checkbox" value="6B" name="kursi[]" class="cek-kursi">6B
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['6C'])) {{$kursi[$value->nomor_bis]['6C']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['6C'])) {{$kursi[$bis->nomor_bis]['6C']}} @endif">
 			<input type="checkbox" value="6C" name="kursi[]" class="cek-kursi">6C
 		</div>
 	</div>
 	<!-- kursi 7 -->
 	<div class="baris">
-		<div class="kursi space @if(isset($kursi[$value->nomor_bis]['7A'])) {{$kursi[$value->nomor_bis]['7A']}} @endif">
+		<div class="kursi space @if(isset($kursi[$bis->nomor_bis]['7A'])) {{$kursi[$bis->nomor_bis]['7A']}} @endif">
 			<input type="checkbox" value="7A" name="kursi[]" class="cek-kursi">7A
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['7B'])) {{$kursi[$value->nomor_bis]['7B']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['7B'])) {{$kursi[$bis->nomor_bis]['7B']}} @endif">
 			<input type="checkbox" value="7B" name="kursi[]" class="cek-kursi">7B
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['7C'])) {{$kursi[$value->nomor_bis]['7C']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['7C'])) {{$kursi[$bis->nomor_bis]['7C']}} @endif">
 			<input type="checkbox" value="7C" name="kursi[]" class="cek-kursi">7C
 		</div>
 	</div>
@@ -95,10 +95,10 @@
 	<div class="toilet">
 		<i class="fa fa-recycle"></i>
 	</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['8A'])) {{$kursi[$value->nomor_bis]['8A']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['8A'])) {{$kursi[$bis->nomor_bis]['8A']}} @endif">
 			<input type="checkbox" value="8A" name="kursi[]" class="cek-kursi">8A
 		</div>
-		<div class="kursi @if(isset($kursi[$value->nomor_bis]['8B'])) {{$kursi[$value->nomor_bis]['8B']}} @endif">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['8B'])) {{$kursi[$bis->nomor_bis]['8B']}} @endif">
 			<input type="checkbox" value="8B" name="kursi[]" class="cek-kursi">8B
 		</div>
 	</div>

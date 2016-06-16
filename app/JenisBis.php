@@ -10,7 +10,11 @@ class JenisBis extends Model {
     protected $fillable = ['jenis', 'slug_jenis'];
     protected $hidden = ['created_at'];
 
-    public function setUpdatedAt($value){}
+    // public function setUpdatedAt($value){}
+
+    public function getUpdatedAtColumn() {
+        return null;
+    }
 
     // public function jenis_bis_trayek()
     // {

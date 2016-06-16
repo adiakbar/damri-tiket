@@ -3,13 +3,6 @@ PR
 
 Pesan Tiket
 ===============
-1. Validasi ketika memasukkan tanggal dan trayek (required) => rule laravel aja
-2. Validasi ketika memasukkan data penumpang (jquery)
-3. Menghitung sebelum create pesanan
-   jadi, apabila ada 2 operator memasukkan data di kursi, kode_trayek, dan tanggal yang sama keluarkan pesan "kursi nomor sekian telah di pesan penumpang lain"
-4. ketika multiple select kursi penumpang di buat perulangan create
-5. buat box konten saat ini sedang pesan di bis, trayek, dan tanggal berapa (dibawah box pilih tanggal)
-6. Buat Algoritma numeratur (DMR000001 - DMR999999)
 7. Buat Cetak tiket (ukuran printer roll - plus barcode)
 
 Data Pesanan
