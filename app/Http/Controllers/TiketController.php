@@ -64,23 +64,10 @@ class TiketController extends Controller
                 if($hitung_bis_berangkat == 0)
                 {
                     $bis_default = BisDefault::where('kode_trayek', '=', $kode_trayek)->get();
+                    
 
-                    foreach($bis_default as $key => $value)
-                    {
-                        $nomor_bis[] = $value->nomor_bis;
-                    }
 
-                    // jika beda stasiun beda bis
-                    if(in_array(1, array_count_values($nomor_bis)))
-                    {
-                        $data['bis'] = BisDefault::where('kode_trayek', '=', $kode_trayek)
-                                                 ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
-                                                 ->first();
-                    }
-                    else
-                    {
-                        $data['bis'] = BisDefault::where('kode_trayek', '=', $kode_trayek)->first();
-                    }
+                    die();
                 }
                 // Bis Berangkat
                 else

@@ -29,6 +29,7 @@
 			  <div class="form-group">
 			  	<label for="">Nomor Bis</label>
 			  	<select name="nomor_bis" id="" class="form-control selectpicker" data-live-search="true">
+			  		<option value="-">Tidak Pake Nomor Bis</option>
 			  		@for($i = 1; $i<=16; $i++)
 			  		<option value="Bis {{ $i }}">Bis {{ $i }}</option>
 			  		@endfor
@@ -171,7 +172,7 @@
 			$("#input-bis-trayek").empty();
 			
 			$.each(trayek[id-1].jenis_bis_trayek, function(index, value) {
-				$("#input-bis-trayek").append("<div class='radio'><label><input type='radio' name='bis_trayek' value="+value.id+"><b>"+value.jenis_bis.jenis+" - "+value.jadwal.slice(0,-3)+" WIB</b><p style='font-size:12px;'>"+value.stasiun_asal+" - "+value.stasiun_tujuan+"</p></label></div>");
+				$("#input-bis-trayek").append("<div class='radio'><label><input type='radio' name='bis_trayek' value="+value.id+"><b>"+value.jenis_bis.jenis+" - "+value.jadwal+" WIB</b><p style='font-size:12px;'>"+value.stasiun_asal+" - "+value.stasiun_tujuan+"</p></label></div>");
 
 				console.log(value);
 			});
