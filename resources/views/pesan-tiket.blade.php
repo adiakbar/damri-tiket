@@ -9,7 +9,7 @@
 	<!-- col-md-4 -->
 	<div class="col-md-4" >
 		<!-- box-form-filter-keberangkatan -->
-		<div class="box-content" @if(isset($bis)) style="display:none;" @endif>
+		<div class="box-content" @if(isset($Bis)) style="display:none;" @endif>
 			<form>
 				<div class="form-group">
 			    <label for="">Tanggal : </label>
@@ -38,6 +38,7 @@
 			<p><b>Harga</b> : {{ "Rp ".number_format($data_trayek->harga,0,',','.') }}</p>
 			<p style="margin-bottom:0;"><b>{{ $data_trayek->jenis_bis->jenis.' | '. $data_trayek->jadwal.' WIB' }}</b></p>
 			<p style="font-size:12px;">{{ $data_trayek->stasiun_asal.' - '.$data_trayek->stasiun_tujuan }}</p>
+			<p><b>Jumlah Bis Berangkat</b> : {{ count($Bis).' Bis' }}</p>
 		</div>
 		@endif
 	</div>
@@ -48,32 +49,37 @@
 
 		<div class="box-content">
 
-			@if(isset($bis))
+			@if(isset($Bis))
 				
 				<div class="row">
 					
 					<div class="col-md-4">
-						@if(count($bis) == 1)
-              <?php
-                $jenis = $bis->jenis_bis_trayek->jenis_bis->slug_jenis;
-                $jumlah_kursi = $bis->jumlah_kursi;
-              ?>
-              @include('layout.kursi-'.$jenis.'-'.$jumlah_kursi)
-            @else
-            	<div class="slider-bis">
-              @foreach($Bis as $bis)
-                <?php
-                  $jenis = $bis->bis->jenis_bis->slug_jenis;
-                  $jumlah_kursi = $bis->bis->jumlah_kursi;
-                ?>
-                @include('layout.kursi-'.$jenis.'-'.$jumlah_kursi)
-              @endforeach
-              </div>
-              <div class="navBis">
-								<a id="prev2" href="#">Prev</a>
-								<a id="next2" href="#">Next</a>
-							</div> 
-            @endif
+						<div class="slider-bis">
+							@foreach($Bis as $bis)
+	              @if($bis->id == 0)
+	              	<?php
+	                  $jenis = $bis->slug_jenis_bis;
+	                  $jumlah_kursi = $bis->jumlah_kursi;
+	                ?>
+	              @else
+	              	<?php
+	                  $jenis = $bis->bis->jenis_bis->slug_jenis;
+	                  $jumlah_kursi = $bis->bis->jumlah_kursi;
+	                ?>
+	              @endif
+	              
+	             		@include('layout.kursi-'.$jenis.'-'.$jumlah_kursi)
+	             	
+	              
+	            @endforeach
+
+	           </div>
+	           @if(count($Bis) > 1)
+              	<div class="navBis">
+                  <a id="prev2" href="#">Prev</a>
+                  <a id="next2" href="#">Next</a>
+                </div> 
+              @endif
 					</div>
 					
 					<div class="col-md-8">

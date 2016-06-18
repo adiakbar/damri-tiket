@@ -91,7 +91,10 @@ class BisController extends Controller
         $data['bis'] = Bis::all();
     	$data['trayek'] = json_encode($array_trayek);
     	$data['bis_berangkat'] = BisBerangkat::whereDate('tanggal', '>=', date('Y-m-d'))
-    										 ->orderBy('jenis_bis_trayek_id', 'ASC')
+    										 
+                                             ->orderBy('tanggal', 'ASC')
+                                             ->orderBy('jenis_bis_trayek_id', 'ASC')
+                                             ->orderBy('nomor_bis', 'ASC')
     										 ->get();
         $data['menu'] = 'unit-bis';
 
@@ -101,191 +104,82 @@ class BisController extends Controller
     public function insertBisBerangkat(Request $request)
     {
         $tanggal = Convert::tgl_ind_to_eng($request->tanggal);
-        $kode_trayek = DB::table('jenis_bis_trayek')->whereIn('id',$request->bis_trayek)->first()->kode_trayek;
-        $bis_trayek = $request->bis_trayek;
-        $nomor_bis = $request->nomor_bis;
-        $bis_id = $request->bis_id;
         
-        foreach($bis_trayek as $key => $jenis_bis_trayek_id)
-        {
-            // Cek apakah tanggal dan jenis_bis_trayek_id sudah ada di DB bis berangkat
-            $cek1 = DB::table('bis_berangkat')
-                        ->where('tanggal', '=', $tanggal)
-                        ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)->count();
-            // Jika belum ada
-            if($cek1 == 0)
-            {
-                // Ini adalah bis utama (syarat utama nomor_bis harus sama dengan bis default)
-                // Cek apakah nomor bis inputan sama dengan nomor bis default
-                $nomor_bis_default = DB::table('bis_default')->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)->first()->nomor_bis;
-                // jika sama
-                if($nomor_bis_default == $nomor_bis)
-                {
-                    // Cek apakah tanggal dan bis_id sudah di gunakan di DB bis berangkat
-                    $cek2 = DB::table('bis_berangkat')
-                            ->where('tanggal', '=', $tanggal)->where('bis_id', '=', $bis_id)->count();
-                    // Jika belum
-                    if($cek2 == 0)
-                    {
-                        // Create BisBerangkat pada kondisi bis_id belum digunakan
-                        BisBerangkat::create(array(
-                            'jenis_bis_trayek_id' => $jenis_bis_trayek_id,
-                            'kode_trayek' => $kode_trayek,
-                            'nomor_bis' => $nomor_bis,
-                            'bis_id' => $bis_id,
-                            'tanggal' => $tanggal
-                        ));
-                        // // Update bis_id untuk table Pesanan
-                        Pesanan::where('tanggal', '=', $tanggal)
-                               ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
-                               ->where('nomor_bis', '=', $nomor_bis)
-                               ->update(array('bis_id' => $bis_id));
-                        
-                        return back();
-                    }
-                    // Jika sudah
-                    else
-                    {
-                        // Cek kode_trayek dan nomor bis yang digunakan sama ndak dengan inputan
-                        $cek3 = DB::table('bis_berangkat')
-                                  ->where('tanggal', '=', $tanggal)->where('bis_id', '=', $bis_id)->first();
-                        // Jika sama
-                        if($cek3->kode_trayek == $kode_trayek && $cek3->nomor_bis == $nomor_bis)
-                        {
-                            // Create BisBerangkat pada kondisi bis_id sudah digunakan
-                            BisBerangkat::create(array(
-                                'jenis_bis_trayek_id' => $jenis_bis_trayek_id,
-                                'kode_trayek' => $kode_trayek,
-                                'nomor_bis' => $nomor_bis,
-                                'bis_id' => $bis_id,
-                                'tanggal' => $tanggal
-                            ));
-                            // // Update bis_id untuk table Pesanan
-                            Pesanan::where('tanggal', '=', $tanggal)
-                                   ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
-                                   ->where('nomor_bis', '=', $nomor_bis)
-                                   ->update(array('bis_id' => $bis_id));
+        $bis_default = BisDefault::all();
 
-                            return back();
-                        } 
-                        // jika tidak sama
-                        else
-                        {
-                            return back()->with('warning', 'Maaf, Trayek dan Plat Bis tidak sama dengan bis sebelumnya');
-                        }
-                    }
-                }
-                // jika tidak sama
-                else
-                {
-                    return back()->with('warning', 'Maaf, Nomor Bis beda dengan Nomor Bis Default');
-                }
+        foreach ($bis_default as $key => $value) 
+        {
+            $hitung_bis_berangkat = BisBerangkat::where('jenis_bis_trayek_id', '=', $value->jenis_bis_trayek_id)
+                                                ->where('kode_trayek', '=', $value->kode_trayek)
+                                                ->where('nomor_bis', '=', $value->nomor_bis)
+                                                ->where('tanggal', '=', $tanggal)
+                                                ->count();
+
+            if($hitung_bis_berangkat == 0)
+            {
+                BisBerangkat::create(array(
+                    'jenis_bis_trayek_id' => $value->jenis_bis_trayek_id,
+                    'kode_trayek' => $value->kode_trayek,
+                    'nomor_bis' => $value->nomor_bis,
+                    'tanggal' => $tanggal,
+                    'slug_jenis_bis' => $value->slug_jenis_bis,
+                    'jumlah_kursi' => $value->jumlah_kursi
+                ));
             }
-            // jika ada
             else
             {
-                // Ini adalah bis tambahan
-                // Cek apakah jenis_bis_trayek_id, tanggal, bis_id dan nomor_bis sudah ada
-                $cek4 = DB::table('bis_berangkat')
-                          ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
-                          ->where('tanggal', '=', $tanggal)
-                          ->where('bis_id', '=', $bis_id)
-                          ->where('nomor_bis', '=', $nomor_bis)
-                          ->count();
-                // Jika belum ada
-                if($cek4 == 0)
-                {
-                    // Cek apakah jenis_bis_trayek_id, tanggal dan nomor_bis sudah ada
-                    $cek5 = DB::table('bis_berangkat')
-                          ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
-                          ->where('tanggal', '=', $tanggal)
-                          ->where('nomor_bis', '=', $nomor_bis)
-                          ->count();
-                    // jika belum ada
-                    if($cek5 == 0)
-                    {
-                        // Cek apakah tanggal dan bis_id sudah ada
-                        $cek6 = DB::table('bis_berangkat')
-                                  ->where('tanggal', '=', $tanggal)
-                                  ->where('bis_id', '=', $bis_id)
-                                  ->count();
-                        // Jika tidak ada
-                        if($cek6 == 0)
-                        {
-                            // Cek apakah nomor_bis sudah digunakan di kode_trayek pada bis default
-                            $cek7 = DB::table('bis_default')
-                                      ->where('nomor_bis', '=', $nomor_bis)
-                                      ->where('kode_trayek', '=', $kode_trayek)
-                                      ->count();
-                            // jika belum
-                            if($cek7 == 0)
-                            {
-                                // Create BisBerangkat tambahan pada kondisi bis_id belum digunakan
-                                BisBerangkat::create(array(
-                                    'jenis_bis_trayek_id' => $jenis_bis_trayek_id,
-                                    'kode_trayek' => $kode_trayek,
-                                    'nomor_bis' => $nomor_bis,
-                                    'bis_id' => $bis_id,
-                                    'tanggal' => $tanggal
-                                ));
-
-                                return back();
-                            }
-                            // jika sudah
-                            else
-                            {   
-                                return back()->with('warning', 'Maaf, Nomor Bis sudah digunakan pada trayek lain di Bis Default');
-                            }
-                        }
-                        else
-                        {
-                            // Cek kode_trayek dan nomor bis yang digunakan sama ndak dengan inputan
-                            $cek8 = DB::table('bis_berangkat')
-                                      ->where('tanggal', '=', $tanggal)->where('bis_id', '=', $bis_id)->first();
-                            // Jika sama
-                            if($cek8->kode_trayek == $kode_trayek && $cek8->nomor_bis == $nomor_bis)
-                            {
-                                // Create BisBerangkat tambahan pada kondisi bis_id sudah digunakan dengan syarat kode_trayek sama
-                                BisBerangkat::create(array(
-                                    'jenis_bis_trayek_id' => $jenis_bis_trayek_id,
-                                    'kode_trayek' => $kode_trayek,
-                                    'nomor_bis' => $nomor_bis,
-                                    'bis_id' => $bis_id,
-                                    'tanggal' => $tanggal
-                                ));
-
-                                return back();
-                            } 
-                            // jika tidak sama
-                            else
-                            {
-                                return back()->with('warning', 'Maaf, Trayek dan Plat Bis tidak sama dengan bis sebelumnya');
-                            }
-                        }
-                    }
-                    // Jika sudah ada
-                    else
-                    {
-                        return back()->with('warning', 'Maaf, Nomor Bis sudah digunakan untuk trayek yang sama');
-                    }
-                }
-                // jika sudah ada
-                else
-                {
-                    return back()->with('warning', 'Maaf, Bis pada jadwal trayek ini sudah di tetapkan');
-                }
-
-            } 
+                return back()->with('warning', 'Maaf, Bis pada jadwal trayek ini sudah di tetapkan');
+            }
         }
+
+        return back();
+    }
+
+    public function insertBisTambahan(Request $request)
+    {
+        $tanggal = Convert::tgl_ind_to_eng($request->tanggal);
+        $nomor_bis = $request->nomor_bis;
+        $bis_trayek = $request->bis_trayek;
+
+        // $bis_trayek;
+
+        foreach($bis_trayek as $key => $jenis_bis_trayek_id)
+        {
+            $cek = BisBerangkat::where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
+                            ->where('nomor_bis', '=', $nomor_bis)
+                            ->where('tanggal', '=', $tanggal)
+                            ->count();
+
+            $kode_trayek = JenisBisTrayek::find($jenis_bis_trayek_id)->kode_trayek;
+            $bis_default = BisDefault::where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)->first();
+            // echo $cek;
+            if($cek == 0)
+            {
+                BisBerangkat::create(array(
+                    'jenis_bis_trayek_id' => $jenis_bis_trayek_id,
+                    'nomor_bis' => $nomor_bis,
+                    'kode_trayek' => $kode_trayek,
+                    'tanggal' => $tanggal,
+                    'slug_jenis_bis' => $bis_default->slug_jenis_bis,
+                    'jumlah_kursi' => $bis_default->jumlah_kursi
+                ));
+                
+            }
+            else
+            {
+                return back()->with('warning', 'Maaf, Bis pada jadwal trayek ini sudah di tetapkan');
+            }
+        }
+        return back();
     }
 
     public function updateBisBerangkat(Request $request)
     {
         $id = $request->id;
-        $tanggal = Convert::tgl_ind_to_eng($request->tanggal);
+        $bis_id = $request->bis_id;
 
         $bis = BisBerangkat::find($id);
-        $bis->tanggal = $tanggal;
+        $bis->bis_id = $bis_id;
         $bis->save();
 
         return back();

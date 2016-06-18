@@ -29,10 +29,13 @@
 			  <div class="form-group">
 			  	<label for="">Nomor Bis</label>
 			  	<select name="nomor_bis" id="" class="form-control selectpicker" data-live-search="true">
-			  		<option value="-">Tidak Pake Nomor Bis</option>
-			  		@for($i = 1; $i<=16; $i++)
-			  		<option value="Bis {{ $i }}">Bis {{ $i }}</option>
-			  		@endfor
+			  		<option value="Bis Default">Tidak Pake Nomor Bis</option>
+			  		<option value="Bis 1">Bis 1</option>
+			  		<option value="Bis 2">Bis 2</option>
+			  		<option value="Bis 3">Bis 3</option>
+			  		<option value="Bis 4">Bis 4</option>
+			  		<option value="Bis 9">Bis 9</option>
+			  		<option value="Bis 10">Bis 10</option>
 			  	</select>
 			  </div>
 

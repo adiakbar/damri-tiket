@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('bis-default-update', 'BisController@updateBisDefault');
 	Route::get('bis-berangkat', 'BisController@bisBerangkat');
 	Route::post('bis-berangkat', 'BisController@insertBisBerangkat');
+	Route::post('bis-tambahan', 'BisController@insertBisTambahan');
 	Route::post('bis-berangkat-update', 'BisController@updateBisBerangkat');
 	Route::get('bis-berangkat-delete/{id}', 'BisController@deleteBisBerangkat');
 	Route::get('bis', 'BisController@dataBis');

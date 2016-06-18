@@ -63,45 +63,24 @@ class TiketController extends Controller
 
                 if($hitung_bis_berangkat == 0)
                 {
-                    $bis_default = BisDefault::where('kode_trayek', '=', $kode_trayek)->get();
+                    $bis_default = BisDefault::select('nomor_bis', 'kode_trayek', 'slug_jenis_bis', 'jumlah_kursi')
+                                             ->where('kode_trayek', '=', $kode_trayek)
+                                             ->distinct()
+                                             ->get();
                     
-
-
-                    die();
+                    $data['Bis'] = $bis_default;
                 }
                 // Bis Berangkat
                 else
                 {
-                    $bis_berangkat = BisBerangkat::where('tanggal', '=', $tanggal)
-                                                 ->where('kode_trayek', '=', $kode_trayek)
-                                                 ->get();
-
-                    foreach($bis_berangkat as $key => $value)
-                    {
-                        $nomor_bis[] = $value->nomor_bis;
-                    }
-
-                    // jika beda stasiun beda bis
-                    if(in_array(1, array_count_values($nomor_bis)))
-                    {
-                        $data['bis'] = ['ini array 1', 'ini array 2']; // untuk ngakalkan perhitungan array
-                        $data['Bis'] = BisBerangkat::select('nomor_bis','bis_id')
-                                                 ->where('kode_trayek', '=', $kode_trayek)
-                                                 ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
-                                                 ->where('tanggal', '=', $tanggal)
-                                                 ->distinct()
-                                                 ->get();
-                    }
-                    else
-                    {
-                        $data['bis'] = ['ini array 1', 'ini array 2']; // untuk ngakalkan perhitungan array
-                        $data['Bis'] = BisBerangkat::select('nomor_bis','bis_id')
+                    $bis_berangkat = BisBerangkat::select('nomor_bis', 'kode_trayek', 
+                                                          'slug_jenis_bis', 'jumlah_kursi', 'bis_id')
                                                     ->where('kode_trayek', '=', $kode_trayek)
                                                     ->where('tanggal', '=', $tanggal)
                                                     ->distinct()
                                                     ->get();
-                    
-                    }
+
+                    $data['Bis'] = $bis_berangkat;
                 }
 
                 // status kursi

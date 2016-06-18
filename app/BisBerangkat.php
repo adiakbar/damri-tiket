@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class BisBerangkat extends Model {
 
 	protected $table = 'bis_berangkat';
-    protected $fillable = ['jenis_bis_trayek_id', 'bis_id', 'tanggal', 'kode_trayek', 'nomor_bis'];
+    protected $fillable = ['jenis_bis_trayek_id', 'bis_id', 'tanggal', 'kode_trayek', 'nomor_bis', 'slug_jenis_bis', 'jumlah_kursi'];
     protected $hidden = ['created_at'];
 
     // public function setUpdatedAt($value){}
