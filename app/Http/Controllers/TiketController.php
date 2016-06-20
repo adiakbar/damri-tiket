@@ -154,9 +154,6 @@ class TiketController extends Controller
                     ));
             }
             
-            
-            
-
             $pesanan = Pesanan::where('tanggal', '=', $tanggal)
                               ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
                               ->where('kode_trayek', '=', $kode_trayek)
@@ -176,30 +173,53 @@ class TiketController extends Controller
 
     public function bayarTiket(Request $request)
     {
-        $pesanan_id = $request->pesanan_id;
+        $pesanan_id = explode(',', $request->pesanan_id);
+        $pesanan = Pesanan::find($pesanan_id[0]);
+        $trayek_id = $pesanan->trayek_id;
+        $alias_asal = strtoupper($pesanan->trayek->alias_asal);
+        $alias_tujuan = strtoupper($pesanan->trayek->alias_tujuan);
+        $tahun = date('Y');
 
-        $id = explode(',', $pesanan_id);
-        $numeratur = 'DMR000000';
+        $default_numeratur = 'DMR000000'.'/'.$alias_asal.'/'.$alias_tujuan.'/'.$tahun;
 
-        foreach($id as $value)
+        $hitung_cash = Pesanan::where('trayek_id', '=', $trayek_id)
+                              ->whereYear('created_at', '=', $tahun)
+                              ->where('status', '=', 'cash')
+                              ->count();
+        
+
+        if($hitung_cash == 0)
         {
-            $jmlKar = strlen($value);
-            $cutNumeratur = substr($numeratur, '0', -$jmlKar);
-            $newNumeratur = $cutNumeratur.''.$value;
-
-            $pesan = Pesanan::find($value);
-            $pesan->numeratur = $newNumeratur;
-            $pesan->status = 'cash';
-            $pesan->save();
-
-            DB::table('log_pesanan')->insert(array(
-                    'petugas' => Auth::user()->petugas,
-                    'aktivitas' => 'Menerima pembayaran tiket atas nama '.$pesan->penumpang.' dengan nomor kursi '.$pesan->nomor_kursi.' untuk tanggal '.\App\Convert::TanggalIndo($pesan->tanggal),
-                    'jenis_bis_trayek_id' => $pesan->jenis_bis_trayek_id
-                ));
-
-            $data[] = array('id' => $value, 'numeratur' => $newNumeratur, 'status' => 'Lunas');
+            $last_numeratur = $default_numeratur;
         }
+        else
+        {
+            $last_numeratur = Pesanan::where('trayek_id', '=', $trayek_id)
+                                    ->where('status', '=', 'cash')
+                                    ->whereYear('created_at', '=', $tahun)
+                                    ->orderBy('id', 'DESC')->first()->numeratur;
+        }
+
+        $numeratur = substr($last_numeratur, 0, 9);
+
+        foreach($pesanan_id as $id)
+        {
+            $pesan = Pesanan::find($id);
+            if($pesan->status == 'booking')
+            {
+                $numeratur++;
+                $pesan->numeratur = $numeratur.'/'.$alias_asal.'/'.$alias_tujuan.'/'.$tahun;
+                $pesan->status = 'cash';
+                $pesan->save();
+
+                $data[] = array('id' => $id, 'numeratur' => $numeratur.'/'.$alias_asal.'/'.$alias_tujuan.'/'.$tahun, 'status' => 'Lunas');
+            }
+            elseif($pesan->status == 'cash')
+            {
+                $data[] = array('id' => $id, 'numeratur' => $pesan->numeratur, 'status' => 'Lunas');
+            }
+        }
+
         return response()->json($data);
     }
 
@@ -226,7 +246,7 @@ class TiketController extends Controller
             $pesanan = Pesanan::where('tanggal', '=', $tanggal)
                               ->where('trayek_id', '=', $request->trayek_id)
                               ->orderBy('jenis_bis_trayek_id', 'ASC')
-                              ->orderBy('nomor_kursi', 'ASC')
+                              ->orderBy('nomor_bis', 'ASC')
                               ->get();
 
             $data['pesanan'] = $pesanan;

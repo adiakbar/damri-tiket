@@ -59,17 +59,15 @@ Route::group(['middleware' => 'auth'], function() {
 });
 
 
-Route::get('daftar', function() {
-	$data = [
-		'petugas' => 'Manager',
-		'username' => 'manager',
-		'password' => bcrypt('sajamantap'),
-		'email' => 'manager@damrionline.com',
-		'level' => 'manager'
-			];
+// Route::get('daftar', function() {
+// 	$data = [
+// 		'petugas' => 'petugas1',
+// 		'username' => 'petugas1',
+// 		'password' => bcrypt('sajamantap'),
+// 		'email' => 'petugas1@tiketdamriptk.com',
+// 		'level' => 'petugas'
+// 			];
 
-	\App\User::create($data);
-	echo 'user telah di buat';
-});
-
-Route::get('layout-bis', 'BisController@layoutBis');
+// 	\App\User::create($data);
+// 	echo 'user telah di buat';
+// });

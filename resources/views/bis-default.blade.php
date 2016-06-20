@@ -79,7 +79,7 @@
 					<th>Jadwal</th>
 					<th>Stasiun Asal</th>
 					<th>Stasiun Tujuan</th>
-					<th style="width: 20px;">Nomor Bis</th>
+					<th>Nomor Bis</th>
 					<th style="width: 20px;">Jumlah Kursi</th>
 					<th></th>
 				</thead>

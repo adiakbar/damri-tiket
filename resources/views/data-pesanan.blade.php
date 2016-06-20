@@ -79,6 +79,7 @@
 					<th>Status</th>
 					<th>Kode Tiket</th>
 					<th>Keterangan</th>
+					<th>Petugas</th>
 					<th></th>
 				</thead>
 				@if(isset($pesanan))
@@ -96,6 +97,7 @@
 						<td id="{{ 'status-tiket-'.$value->id }}">{{ $value->status }}</td>
 						<td id="{{ 'kode-tiket-'.$value->id }}">{{ $value->numeratur}}</td>
 						<td>{{ $value->keterangan }}</td>
+						<td>{{ $value->petugas->petugas }}</td>
 						<td>
 							<input type="checkbox" value="{{ $value->id }}" name="pesanan[]" style="display:none;">
 						</td>

@@ -5,7 +5,9 @@
 
 	<title>Sistem Tiket Bis Online Perum Damri Kalimantan Barat</title>
 
-	<!-- <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans:400,600'> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans:400,600'>
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugin/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
@@ -17,6 +19,9 @@
 </head>
 
 <body>
+
+<div class="cover" id="cover-responsive">
+</div>
 
 	<!-- sidebar -->
 	<div id="sidebar">
@@ -74,12 +79,15 @@
 	<header id="header">
 		<!-- box-logo -->
 		<div class="box-logo">
-            <img class="box-logo-image" src="img/damri-logo.png" style="width: 65px;">
-            <h1 class="box-logo-title">Perum Damri Kantor Cab. Pontianak</h1>
-            <h2 class="box-logo-title">Kalimantan Barat</h2>
-            <p class="box-logo-caption">Damri Online System</p>
-        </div>
+        <img class="box-logo-image" src="img/damri-logo.png">
+        <h1 class="box-logo-title">Perum Damri Kantor Cab. Pontianak</h1>
+        <h2 class="box-logo-title">Kalimantan Barat</h2>
+        <p class="box-logo-caption">Damri Online System</p>
+    </div>
 		<!-- end-box-logo -->
+		<div class="collapse-icon" id="collapse-icon">
+			<i class="fa fa-bars"></i>
+		</div>
 		<!-- box-user -->
 		<div class="box-user">
 			<span><a href="{{ url('/petugas-detail') }}">Hello, {{ Auth::user()->petugas }}</a></span>
@@ -104,6 +112,16 @@
 	<script type="text/javascript" src="{{ asset('plugin/jquery.cycle.all.js') }}"></script>
 	<script type="text/javascript">
 		var base_url = window.location.origin;
+		$(document).ready(function() {
+			$("#collapse-icon").click(function() {
+				$('#sidebar').animate({"left":"0px"}, "medium");
+				$('#cover-responsive').show();
+			});
+			$("#cover-responsive").click(function() {
+				$('#sidebar').animate({"left":"-100px"}, "medium");
+				$('#cover-responsive').hide();
+			})
+		});
 	</script>
 	@yield('script')
 

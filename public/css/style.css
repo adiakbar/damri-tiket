@@ -53,7 +53,7 @@ a:hover {
 }
 .partner {
 	float: right;
-	padding-top: 50px;
+	padding-top: 80px;
 }
 .section-caption-login {
 	padding-top: 20px;
@@ -124,6 +124,7 @@ a:hover {
 .box-logo-image {
 	float: left;
 	margin-right: 10px;
+	width: 65px;
 }
 .box-logo-title {
 	font-size: 20px;
@@ -297,6 +298,7 @@ a:hover {
 
 .box-tiket-cetak {
 	width: 300px;
+	margin-bottom: 25px;
 	/*outline: 1px solid red;*/
 }
 .form-inline .form-group {
@@ -341,4 +343,117 @@ a:hover {
 }
 .box-jml-tiket .trayek {
 	font-size: 10px;
+}
+.collapse-icon {
+	display: none;
+}
+
+
+/* Responsive Layout */
+@media only screen and (max-width: 500px) {
+	
+#sidebar {
+	left: -100px;
+	/*display: none;*/
+	z-index: 10;
+}
+#header, #content {
+	margin-left: 0;
+}
+.box-logo {
+	display: inline-block;
+	width: 100%;
+	padding-top: 10px;
+}
+.box-logo-image {
+	float: left;
+	margin-right: 10px;
+	width: 60px;
+}
+.box-logo-title {
+	font-size: 16px;
+	margin: 0;
+	/*padding-top: 5px;*/
+	font-weight: 700;
+	color: #0D47A1;
+}
+.box-logo-caption {
+	font-size: 12px;
+	padding-top: 3px;
+}
+.box-user{
+	float: right;
+	margin-right: 20px;
+	margin-top: 20px;
+}
+.collapse-icon {
+	display: inline-block;
+	margin-top: 15px;
+	cursor: pointer;
+}
+.collapse-icon .fa {
+	/*border: 1px solid #000;*/
+	padding: 3px;
+	border-radius: 3px;
+}
+
+.section-login {
+	background-image: url('../img/damri-royal.jpg');
+	background-size: cover;
+	height: 380px;
+}
+.cover-login {
+	background-color: rgba(12,78,126,0.7);
+	height: 380px;
+}
+.form-login {
+	background: #ffffff;
+	margin-top: 20px;
+	padding: 30px;
+	border-radius: 3px;
+	border-bottom: 5px solid #FFCA0A;
+}
+.form-login .form-control {
+	border: none;
+	box-shadow: none;
+	border-bottom: 1px solid rgba(12,78,126,0.7);
+}
+.login-banner {
+	margin-top: 20px;
+}
+.login-banner h2 {
+	font-size: 30px;
+	font-weight: 700;
+	color: #FFCA0A;
+}
+.login-banner h4 {
+	color: #ffffff;
+	font-size: 14px;
+}
+.partner {
+	display: none;
+}
+.section-caption-login {
+	padding-top: 20px;
+	text-align: center;
+}
+.section-caption-login .fa {
+	font-size: 30px;
+	background-color: #0D47A1;
+	padding: 15px;
+	border-radius: 50%;
+	color: #fff;
+}
+.section-caption-login h4 {
+	font-size: 16px;
+	font-weight: 600;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	border-bottom: 1px solid rgba(12,78,126,0.7);
+	/*border-top: 1px solid rgba(12,78,126,0.7);*/
+}
+.section-caption-login p {
+	font-size: 12px;
+}
+
 }

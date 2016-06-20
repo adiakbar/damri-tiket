@@ -29,6 +29,8 @@
 			<p style="font-size:12px;">{{ $value->jenis_bis_trayek->stasiun_asal.' - '.$value->jenis_bis_trayek->stasiun_tujuan }}</p>
 			<p class="text-label">Nama</p>
 			<p>{{ $value->penumpang }}</p>
+			<p class="text-label">Kode Tiket</p>
+			<p id="{{ 'kode-tiket-'.$value->id }}">{{ ($value->numeratur == '' ? '-' : $value->numeratur) }}</p>
 			<div class="row">
 				<div class="col-md-6">
 					<p class="text-label">Telepon</p>
@@ -45,13 +47,10 @@
 					<p>{{  "Rp ".number_format($value->jenis_bis_trayek->harga,0,',','.')  }}</p>
 				</div>
 				<div class="col-md-6">
-					<p class="text-label">Kode Tiket</p>
-					<p id="{{ 'kode-tiket-'.$value->id }}">{{ ($value->numeratur == '' ? '-' : $value->numeratur) }}</p>
+					<p class="text-label">Passport</p>
+					<p>{{ ($value->passport == '' ? '-' : $value->passport) }}</p>
 				</div>
 			</div>
-
-			<p class="text-label">Passport</p>
-			<p>{{ ($value->passport == '' ? '-' : $value->passport) }}</p>
 			<p class="text-label">Keterangan</p>
 			<p>{{ ($value->keterangan  == '' ? '-' : $value->keterangan) }}</p>
 			<input type="checkbox" value="{{ $value->id }}" name="pesanan[]" style="display:none;">

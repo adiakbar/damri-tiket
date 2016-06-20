@@ -68,7 +68,7 @@
 	                ?>
 	              @endif
 	              
-	             		@include('layout.kursi-'.$jenis.'-'.$jumlah_kursi)
+	             	@include('layout.kursi-'.$jenis.'-'.$jumlah_kursi)
 	             	
 	              
 	            @endforeach

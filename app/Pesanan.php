@@ -16,4 +16,14 @@ class Pesanan extends Model
     {
     	return $this->belongsTo('App\JenisBisTrayek');
     }
+
+    public function trayek()
+    {
+    	return $this->belongsTo('App\Trayek');
+    }
+
+    public function petugas()
+    {
+        return $this->belongsTo('App\User');
+    }
 }
