@@ -10,6 +10,7 @@
 
 <h2 class="content-title">Data Pesanan</h2>
 
+<a href="{{ url('pesanan-export') }}" style="font-size:12px;"> Export Data Pesanan</a>
 
 		<div class="box-content">
 			<div class="row">

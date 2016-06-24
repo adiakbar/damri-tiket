@@ -4,10 +4,10 @@
 
 <h2 class="content-title">Manajemen Bis</h2>
 
-<a href="{{ url('bis-berangkat') }}">Bis Berangkat</a> |
-@if(Auth::user()->level == 'admin' || Auth::user()->level == 'superadmin')
-<a href="{{ url('bis-default') }}">Bis Default</a> |
-<a href="{{ url('bis') }}">Bis</a>
+<a href="{{ url('bis-berangkat') }}" style="font-size:12px;">Bis Berangkat</a> |
+@if(Auth::user()->level == 'admin' || Auth::user()->level == 'superadmin' || Auth::user()->level == 'root')
+<a href="{{ url('bis-default') }}" style="font-size:12px;">Bis Default</a> |
+<a href="{{ url('bis') }}" style="font-size:12px;">Bis</a>
 @endif
 
 @if(Auth::user()->level == 'admin' || Auth::user()->level == 'superadmin')

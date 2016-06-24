@@ -3,9 +3,9 @@
 @section('content')
 
 <h2 class="content-title">Manajemen Bis</h2>
-<a href="{{ url('bis-default') }}">Bis Default</a> |
-<a href="{{ url('bis-berangkat') }}">Bis Berangkat</a> |
-<a href="{{ url('bis') }}">Bis</a>
+<a href="{{ url('bis-default') }}" style="font-size:12px;">Bis Default</a> |
+<a href="{{ url('bis-berangkat') }}" style="font-size:12px;">Bis Berangkat</a> |
+<a href="{{ url('bis') }}" style="font-size:12px;">Bis</a>
 
 <div class="row">
 	
