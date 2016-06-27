@@ -10,6 +10,7 @@ use App\Http\Requests;
 use App\JenisBisTrayek;
 use App\Pesanan;
 use App\Trayek;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,85 +19,90 @@ class TiketController extends Controller
 {
     public function index(Request $request)
     {
-
-        if(Auth::check())
+      if(Auth::check())
         {
-            $Trayek = Trayek::all();
+          $Trayek = Trayek::all();
 
-            foreach($Trayek as $trayek)
+          foreach($Trayek as $trayek)
+          {
+            $array_trayek[] = $trayek;
+            $trayek->jenis_bis_trayek;
+
+            foreach($trayek->jenis_bis_trayek as $jenis_bis)
             {
-                $array_trayek[] = $trayek;
-                $trayek->jenis_bis_trayek;
-
-                foreach($trayek->jenis_bis_trayek as $jenis_bis)
-                {
-                    $jenis_bis->jenis_bis;
-                }
+              $jenis_bis->jenis_bis;
             }
+          }
 
-            $today = date('Y-m-d');
-            $data['jml_tiket'] = DB::select("SELECT alias, COUNT(penumpang) as total 
-                                    FROM trayek
-                                    LEFT JOIN
-                                        (SELECT trayek_id, penumpang
-                                         FROM pesanan
-                                         WHERE tanggal = '$today')
-                                    AS jmlPenumpang
-                                    ON trayek.id = jmlPenumpang.trayek_id
-                                    GROUP BY alias
-                                    ORDER BY id");
+          $today = date('Y-m-d');
+          $data['jml_tiket'] = DB::select(
+          											"SELECT alias, COUNT(penumpang) as total 
+                                  FROM trayek
+                                  LEFT JOIN
+                                    (SELECT trayek_id, penumpang
+                                    FROM pesanan
+                                    WHERE tanggal = '$today')
+                                  AS jmlPenumpang
+                                  ON trayek.id = jmlPenumpang.trayek_id
+                                  GROUP BY alias
+                                  ORDER BY id");
 
             // Cek Bis
             if(isset($request->bis_trayek) && isset($request->tanggal))
             {
-                $jenis_bis_trayek_id = $request->bis_trayek;
-                $tanggal = Convert::tgl_ind_to_eng($request->tanggal);
+              $jenis_bis_trayek_id = $request->bis_trayek;
+              $tanggal = Convert::tgl_ind_to_eng($request->tanggal);
 
-                $data_trayek = JenisBisTrayek::find($jenis_bis_trayek_id);
-                $kode_trayek = $data_trayek->kode_trayek;
+              $data_trayek = JenisBisTrayek::find($jenis_bis_trayek_id);
+              $kode_trayek = $data_trayek->kode_trayek;
 
+              // cek pada tanggal tersebut sudah ada di tetapkan bis yang berangkat belum
+              $hitung_bis_berangkat = BisBerangkat::where('tanggal', '=', $tanggal)
+                                                  ->where('kode_trayek', '=', $kode_trayek)
+                                                  ->count();
 
-                // cek pada tanggal tersebut sudah ada di tetapkan bis yang berangkat belum
-                $hitung_bis_berangkat = BisBerangkat::where('tanggal', '=', $tanggal)
-                                                    ->where('kode_trayek', '=', $kode_trayek)
-                                                    ->count();
+              if($hitung_bis_berangkat == 0)
+              {
+                $bis_default = BisDefault::select(
+                							'nomor_bis', 'kode_trayek', 'slug_jenis_bis', 'jumlah_kursi')
+                                          ->where('kode_trayek', '=', $kode_trayek)
+                                          ->distinct()
+                                          ->get();
+                  
+                $data['Bis'] = $bis_default;
+              }
+              // Bis Berangkat
+              else
+              {
+                $bis_berangkat = BisBerangkat::select(
+                								'nomor_bis', 'kode_trayek', 'slug_jenis_bis', 
+                								'jumlah_kursi', 'bis_id')
+                                              ->where('kode_trayek', '=', $kode_trayek)
+                                              ->where('tanggal', '=', $tanggal)
+                                              ->distinct()
+                                              ->get();
 
-                if($hitung_bis_berangkat == 0)
-                {
-                    $bis_default = BisDefault::select('nomor_bis', 'kode_trayek', 'slug_jenis_bis', 'jumlah_kursi')
-                                             ->where('kode_trayek', '=', $kode_trayek)
-                                             ->distinct()
-                                             ->get();
-                    
-                    $data['Bis'] = $bis_default;
-                }
-                // Bis Berangkat
-                else
-                {
-                    $bis_berangkat = BisBerangkat::select('nomor_bis', 'kode_trayek', 
-                                                          'slug_jenis_bis', 'jumlah_kursi', 'bis_id')
-                                                    ->where('kode_trayek', '=', $kode_trayek)
-                                                    ->where('tanggal', '=', $tanggal)
-                                                    ->distinct()
-                                                    ->get();
-
-                    $data['Bis'] = $bis_berangkat;
-                }
+                $data['Bis'] = $bis_berangkat;
+              }
 
                 // status kursi
-                $status = Pesanan::where('tanggal', '=', $tanggal)
-                                 ->where('kode_trayek', '=',  $kode_trayek)
-                                 ->get();
+              $status = Pesanan::where('tanggal', '=', $tanggal)
+                               ->where('kode_trayek', '=',  $kode_trayek)
+                               ->get();
 
-                foreach($status as $key => $kursi)
-                {
-                    $data['kursi'][$kursi->nomor_bis][$kursi->nomor_kursi] = $kursi->status;
-                }
+              foreach($status as $key => $kursi)
+              {
+                $data['kursi'][$kursi->nomor_bis][$kursi->nomor_kursi] = $kursi->status;
+                $data['penumpang'][$kursi->nomor_bis][$kursi->nomor_kursi] = $kursi->penumpang;
+                $data['telephone'][$kursi->nomor_bis][$kursi->nomor_kursi] = $kursi->telephone;
+                $data['asal'][$kursi->nomor_bis][$kursi->nomor_kursi] = $kursi->domisili_asal;
+                $data['tujuan'][$kursi->nomor_bis][$kursi->nomor_kursi] = $kursi->domisili_tujuan;
+              }
 
-                
-                $data['tanggal'] = $tanggal;
-                $data['data_trayek'] = $data_trayek;
-                $data['jenis_bis_trayek_id'] = $jenis_bis_trayek_id;
+              
+              $data['tanggal'] = $tanggal;
+              $data['data_trayek'] = $data_trayek;
+              $data['jenis_bis_trayek_id'] = $jenis_bis_trayek_id;
             }
            
             $data['trayek'] = json_encode($array_trayek);
@@ -108,153 +114,209 @@ class TiketController extends Controller
         {
             return view('layout.login');
         }
-
-    	
     }
 
     public function pesanTiket(Request $request)
     {
-        $data = $request->all();
-        unset($data['nomor_kursi']);
+      $data = $request->all();
+      unset($data['nomor_kursi']);
 
-        $penumpang = $request->penumpang;
-        $telephone = $request->telephone;
-        $passport = $request->passport;
-        $tanggal = $request->tanggal;
-        $status = $request->status;
-        $keterangan = $request->keterangan;
-        $petugas_id = $request->petugas_id;
-        $jenis_bis_trayek_id = $request->jenis_bis_trayek_id;
-        $kode_trayek = $request->kode_trayek;
-        $nomor_bis = $request->nomor_bis;
-        $nomor_kursi = explode(',', $request->nomor_kursi);
-        $bis_id = $request->bis_id;
+      $penumpang = $request->penumpang;
+      $telephone = $request->telephone;
+      $passport = $request->passport;
+      $tanggal = $request->tanggal;
+      $status = $request->status;
+      $keterangan = $request->keterangan;
+      $petugas_id = $request->petugas_id;
+      $jenis_bis_trayek_id = $request->jenis_bis_trayek_id;
+      $kode_trayek = $request->kode_trayek;
+      $nomor_bis = $request->nomor_bis;
+      $nomor_kursi = explode(',', $request->nomor_kursi);
+      $bis_id = $request->bis_id;
 
-        $hitung_pesanan = Pesanan::where('tanggal', '=', $tanggal)
-                                 ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
-                                 ->where('kode_trayek', '=', $kode_trayek)
-                                 ->where('nomor_bis', '=', $nomor_bis)
-                                 ->whereIn('nomor_kursi', $nomor_kursi)
-                                 ->count();
+      $hitung_pesanan = Pesanan::where('tanggal', '=', $tanggal)
+                               ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
+                               ->where('kode_trayek', '=', $kode_trayek)
+                               ->where('nomor_bis', '=', $nomor_bis)
+                               ->whereIn('nomor_kursi', $nomor_kursi)
+                               ->count();
         
-        if($hitung_pesanan == 0)
+      if($hitung_pesanan == 0)
+      {
+        foreach($nomor_kursi as $key => $kursi)
         {
-            foreach($nomor_kursi as $key => $kursi)
-            {
-                $data_pesanan[$key] = $data;
-                $data_pesanan[$key]['nomor_kursi'] = $kursi; 
+          $data_pesanan[$key] = $data;
+          $data_pesanan[$key]['nomor_kursi'] = $kursi; 
             
-                Pesanan::create($data_pesanan[$key]);
+          Pesanan::create($data_pesanan[$key]);
 
-                // Log
-                DB::table('log_pesanan')->insert(array(
-                        'petugas' => Auth::user()->petugas,
-                        'aktivitas' => 'Booking tiket atas nama '.$penumpang.' dengan nomor kursi '.$kursi.' untuk tanggal '.\App\Convert::TanggalIndo($tanggal),
-                        'jenis_bis_trayek_id' => $jenis_bis_trayek_id
-                    ));
-            }
+          // Log
+          DB::table('log_pesanan')->insert(array(
+                    'petugas' => Auth::user()->petugas,
+                    'aktivitas' => 'Booking tiket atas nama '.$penumpang.' dengan nomor kursi '.$kursi.' untuk tanggal '.\App\Convert::TanggalIndo($tanggal),
+                    'jenis_bis_trayek_id' => $jenis_bis_trayek_id
+          ));
+        }
             
-            $pesanan = Pesanan::where('tanggal', '=', $tanggal)
-                              ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
-                              ->where('kode_trayek', '=', $kode_trayek)
-                              ->where('nomor_bis', '=', $nomor_bis)
-                              ->whereIn('nomor_kursi', $nomor_kursi)
-                              ->get();
-            // print_r($pesanan);
-            return view('bayar-tiket')->with('pesanan', $pesanan)
-                                      ->with('menu', 'pesan-tiket');
-        }
-        else
-        {
-            return back()->with('warning', 'Kursi '.$request->nomor_kursi.' sudah ada yang memesan')
-                             ->withInput();
-        }
+        $pesanan = Pesanan::where('tanggal', '=', $tanggal)
+                          ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
+                          ->where('kode_trayek', '=', $kode_trayek)
+                          ->where('nomor_bis', '=', $nomor_bis)
+                          ->whereIn('nomor_kursi', $nomor_kursi)
+                          ->get();
+        // print_r($pesanan);
+        return view('bayar-tiket')->with('pesanan', $pesanan)
+                                  ->with('menu', 'pesan-tiket');
+      }
+      else
+      {
+        return back()->with('warning', 'Kursi '.$request->nomor_kursi.' 
+        										sudah ada yang memesan')
+                     ->withInput();
+      }
     }
 
     public function bayarTiket(Request $request)
     {
-        $pesanan_id = explode(',', $request->pesanan_id);
-        $pesanan = Pesanan::find($pesanan_id[0]);
-        $trayek_id = $pesanan->trayek_id;
-        $alias_asal = strtoupper($pesanan->trayek->alias_asal);
-        $alias_tujuan = strtoupper($pesanan->trayek->alias_tujuan);
-        $tahun = date('Y');
+      $pesanan_id = explode(',', $request->pesanan_id);
+      $pesanan = Pesanan::find($pesanan_id[0]);
+      $trayek_id = $pesanan->trayek_id;
+      $alias_asal = strtoupper($pesanan->trayek->alias_asal);
+      $alias_tujuan = strtoupper($pesanan->trayek->alias_tujuan);
+      $tahun = date('Y');
 
-        $default_numeratur = 'DMR000000'.'/'.$alias_asal.'/'.$alias_tujuan.'/'.$tahun;
+      $default_numeratur = 'DMR000000'.'/'.$alias_asal.'/'.$alias_tujuan.'/'.$tahun;
 
-        $hitung_cash = Pesanan::where('trayek_id', '=', $trayek_id)
-                              ->whereYear('created_at', '=', $tahun)
-                              ->where('status', '=', 'cash')
-                              ->count();
+      $hitung_cash = Pesanan::where('trayek_id', '=', $trayek_id)
+                            ->whereYear('created_at', '=', $tahun)
+                            ->where('status', '=', 'cash')
+                            ->count();
         
 
-        if($hitung_cash == 0)
+      if($hitung_cash == 0)
+      {
+        $last_numeratur = $default_numeratur;
+      }
+      else
+      {
+        $last_numeratur = Pesanan::where('trayek_id', '=', $trayek_id)
+                                 ->where('status', '=', 'cash')
+                                 ->whereYear('created_at', '=', $tahun)
+                                 ->orderBy('id', 'DESC')->first()->numeratur;
+      }
+
+      $numeratur = substr($last_numeratur, 0, 9);
+
+      foreach($pesanan_id as $id)
+      {
+        $pesan = Pesanan::find($id);
+        if($pesan->status == 'booking')
         {
-            $last_numeratur = $default_numeratur;
+          $numeratur++;
+          $pesan->numeratur = $numeratur.'/'.$alias_asal.'/'.$alias_tujuan.'/'.$tahun;
+          $pesan->status = 'cash';
+          $pesan->save();
+
+          $data[] = array('id' => $id, 'numeratur' => $numeratur.'/'.$alias_asal.'/'.$alias_tujuan.'/'.$tahun, 'status' => 'Lunas');
         }
-        else
+        elseif($pesan->status == 'cash')
         {
-            $last_numeratur = Pesanan::where('trayek_id', '=', $trayek_id)
-                                    ->where('status', '=', 'cash')
-                                    ->whereYear('created_at', '=', $tahun)
-                                    ->orderBy('id', 'DESC')->first()->numeratur;
+          $data[] = array('id' => $id, 'numeratur' => $pesan->numeratur, 'status' => 'Lunas');
         }
+      }
 
-        $numeratur = substr($last_numeratur, 0, 9);
-
-        foreach($pesanan_id as $id)
-        {
-            $pesan = Pesanan::find($id);
-            if($pesan->status == 'booking')
-            {
-                $numeratur++;
-                $pesan->numeratur = $numeratur.'/'.$alias_asal.'/'.$alias_tujuan.'/'.$tahun;
-                $pesan->status = 'cash';
-                $pesan->save();
-
-                $data[] = array('id' => $id, 'numeratur' => $numeratur.'/'.$alias_asal.'/'.$alias_tujuan.'/'.$tahun, 'status' => 'Lunas');
-            }
-            elseif($pesan->status == 'cash')
-            {
-                $data[] = array('id' => $id, 'numeratur' => $pesan->numeratur, 'status' => 'Lunas');
-            }
-        }
-
-        return response()->json($data);
+      return response()->json($data);
     }
 
     public function cetakTiket(Request $request)
     {
-        $pesanan_id = $request->pesanan_id;
+      $pesanan_id = $request->pesanan_id;
 
-        $id = explode(',', $pesanan_id);
-        $pesanan = Pesanan::whereIn('id', $id)->get();
+      $id = explode(',', $pesanan_id);
+      $pesanan = Pesanan::whereIn('id', $id)->get();
 
-        // return "helo";
-        return view('cetak-tiket')->with('pesanan', $pesanan)
-                                  ->with('menu', 'pesan-tiket');
+      return view('cetak-tiket')->with('pesanan', $pesanan)
+                                ->with('menu', 'pesan-tiket');
     }
 
     public function dataPesanan(Request $request)
     {
-        $Trayek = Trayek::all();
+      // $Trayek = DB::table('trayek')->whereIn('id',[1,2,8])->get();
+      // foreach($Trayek as $trayek)
+      // {
+        
+      // }
+
+      $Trayek1 = DB::table('jenis_bis_trayek')
+                  ->leftJoin('trayek', 'jenis_bis_trayek.trayek_id', '=', 'trayek.id')
+                  ->leftJoin('jenis_bis', 'jenis_bis_trayek.jenis_bis_id', '=', 'jenis_bis.id')
+                  ->whereIn('trayek.id',[1,2,8,9,10])
+                  ->get();
+
+
+
+      $Trayek2 = DB::table('trayek')->whereNotIn('id', [1,2,8,9,10])->get();
 
         // Cek Pesanan
-        if(isset($request->trayek_id) && isset($request->tanggal))
+        if(isset($request->kode_trayek) && isset($request->tanggal))
         {
             $tanggal = Convert::tgl_ind_to_eng($request->tanggal);
-            $pesanan = Pesanan::where('tanggal', '=', $tanggal)
-                              ->where('trayek_id', '=', $request->trayek_id)
-                              ->orderBy('jenis_bis_trayek_id', 'ASC')
-                              ->orderBy('nomor_bis', 'ASC')
-                              ->get();
+            
+            $kode_trayek = $request->kode_trayek;
+            $data_trayek = JenisBisTrayek::where('kode_trayek', '=', $kode_trayek)->first();
 
-            $data['pesanan'] = $pesanan;
-            $data['trayek'] = Trayek::find($request->trayek_id);
-            $data['tanggal'] = $tanggal;
+            $nomor_bis = Pesanan::select('nomor_bis')
+            										->where('tanggal', '=', $tanggal)
+                               	->where('kode_trayek', '=',  $kode_trayek)
+                               	->distinct()
+                               	->get();
+
+            $hitungPnp = Pesanan::where('tanggal', '=', $tanggal)
+                                ->where('kode_trayek', '=',  $kode_trayek)
+                                ->count();
+
+
+            if($hitungPnp > 0)
+            {
+              foreach($nomor_bis as $value)
+              {
+                $data['pesanan'] = 'pesanan';
+                $pnpBooking[$value->nomor_bis] = Pesanan::where('tanggal', '=', $tanggal)
+                                                      ->where('kode_trayek', '=',  $kode_trayek)
+                                                      ->where('nomor_bis', '=', $value->nomor_bis)
+                                                      ->where('status', '=', 'booking')
+                                                      ->orderBy('nomor_kursi', 'ASC')
+                                                      ->get();
+
+                $pnpCash[$value->nomor_bis] = Pesanan::where('tanggal', '=', $tanggal)
+                                                      ->where('kode_trayek', '=',  $kode_trayek)
+                                                      ->where('nomor_bis', '=', $value->nomor_bis)
+                                                      ->where('status', '=', 'cash')
+                                                      ->orderBy('nomor_kursi', 'ASC')
+                                                      ->get();
+
+                $jmlHarga[$value->nomor_bis] = DB::table('pesanan')
+                                                 ->leftJoin('jenis_bis_trayek', 'pesanan.jenis_bis_trayek_id', '=', 'jenis_bis_trayek.id')
+                                                 ->where('pesanan.tanggal', '=', $tanggal)
+                                                 ->where('pesanan.kode_trayek', '=',  $kode_trayek)
+                                                 ->where('pesanan.nomor_bis', '=', $value->nomor_bis)
+                                                 ->where('pesanan.status', '=', 'cash')
+                                                 ->sum('harga');
+              }
+              // print_r($jmlHarga);
+              $data['pnpBooking'] = $pnpBooking;
+              $data['pnpCash'] = $pnpCash;
+              $data['tanggal'] = $tanggal;
+              $data['jmlHarga'] = $jmlHarga;
+              $data['data_trayek'] = $data_trayek;
+            }
         }
 
-        $data['Trayek'] = $Trayek;
+        // $data['trayek'] = json_encode($array_trayek);
+        // print_r($data['trayek']);
+        // die();
+        $data['Trayek1'] = $Trayek1;
+        $data['Trayek2'] = $Trayek2;
         $data['menu'] = 'data-pesanan';
 
         return view('data-pesanan', $data);
@@ -280,5 +342,53 @@ class TiketController extends Controller
 
         return back();
         // print_r($data);
+    }
+
+    public function pesananExport(Request $request)
+    {
+    	$tanggal = $request->tanggal;
+    	$kode_trayek = $request->kode_trayek;
+      $data_trayek = JenisBisTrayek::where('kode_trayek', '=', $kode_trayek)->first();
+
+      $nomor_bis = Pesanan::select('nomor_bis')
+                          ->where('tanggal', '=', $tanggal)
+                          ->where('kode_trayek', '=',  $kode_trayek)
+                          ->distinct()
+                          ->get();
+
+      foreach($nomor_bis as $value)
+      {
+        $data['pesanan'] = 'pesanan';
+        $pnpCash[$value->nomor_bis] = Pesanan::where('tanggal', '=', $tanggal)
+                                              ->where('kode_trayek', '=',  $kode_trayek)
+                                              ->where('nomor_bis', '=', $value->nomor_bis)
+                                              ->where('status', '=', 'cash')
+                                              ->orderBy('nomor_kursi', 'ASC')
+                                              ->get();
+
+        $jmlHarga[$value->nomor_bis] = DB::table('pesanan')
+                                         ->leftJoin('jenis_bis_trayek', 'pesanan.jenis_bis_trayek_id', '=', 'jenis_bis_trayek.id')
+                                         ->where('pesanan.tanggal', '=', $tanggal)
+                                         ->where('pesanan.kode_trayek', '=',  $kode_trayek)
+                                         ->where('pesanan.nomor_bis', '=', $value->nomor_bis)
+                                         ->where('pesanan.status', '=', 'cash')
+                                         ->sum('harga');
+        $jmlPnp[$value->nomor_bis] = DB::table('pesanan')
+                                        ->where('tanggal', '=', $tanggal)
+                                        ->where('kode_trayek', '=',  $kode_trayek)
+                                        ->where('nomor_bis', '=', $value->nomor_bis)
+                                        ->where('status', '=', 'cash')
+                                        ->count();
+      }
+      
+      $data['pnpCash'] = $pnpCash;
+      $data['jmlPnp'] = $jmlPnp;
+      $data['tanggal'] = $tanggal;
+      $data['jmlHarga'] = $jmlHarga;
+      $data['data_trayek'] = $data_trayek;
+
+    	$pdf = \App::make('dompdf.wrapper');
+			$pdf->loadView('pdf.laporan-penumpang', $data);
+			return $pdf->stream();
     }
 }

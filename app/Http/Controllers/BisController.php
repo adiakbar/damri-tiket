@@ -33,7 +33,14 @@ class BisController extends Controller
             }
         }
     	$data['trayek'] = json_encode($array_trayek);
-    	$data['bis_default'] = BisDefault::orderBy('jenis_bis_trayek_id', 'ASC')->get();
+    	$data['bis_default'] = DB::select("SELECT DISTINCT 
+                                            alias,nomor_bis, jadwal, 
+                                            slug_jenis_bis, jumlah_kursi, bis_default.kode_trayek
+                                          FROM bis_default
+                                          LEFT JOIN jenis_bis_trayek
+                                          ON bis_default.jenis_bis_trayek_id = jenis_bis_trayek.id
+                                          LEFT JOIN trayek ON jenis_bis_trayek.trayek_id = trayek.id");
+
         $data['menu'] = 'unit-bis';
     	return view('bis-default', $data);
     }
@@ -42,7 +49,9 @@ class BisController extends Controller
     {
     	$data = $request->all();
     	unset($data['bis_trayek']);
-    	$data['kode_trayek'] = JenisBisTrayek::find($request->bis_trayek)->kode_trayek;
+    	$data_bis = JenisBisTrayek::find($request->bis_trayek);
+        $data['kode_trayek'] = $data_bis->kode_trayek;
+        $data['slug_jenis_bis'] = $data_bis->jenis_bis->slug_jenis;
     	$data['jenis_bis_trayek_id'] = $request->bis_trayek;
     	$hitungBis = BisDefault::where('jenis_bis_trayek_id','=',$request->bis_trayek)
 	    						->where('nomor_bis','=',$request->nomor_bis)
@@ -51,6 +60,7 @@ class BisController extends Controller
     	// print_r($data);
     	if($hitungBis == 0)
     	{
+            // print_r($data);
     		BisDefault::create($data);
     		return back();
     	}
@@ -62,14 +72,15 @@ class BisController extends Controller
 
     public function updateBisDefault(Request $request)
     {
-        $id = $request->id;
+        $kode_trayek = $request->kode_trayek;
         $nomor_bis = $request->nomor_bis;
         $jumlah_kursi = $request->jumlah_kursi;
 
-        $bis = BisDefault::find($id);
-        $bis->nomor_bis = $nomor_bis;
-        $bis->jumlah_kursi = $jumlah_kursi;
-        $bis->save();
+        BisDefault::where('kode_trayek', '=', $kode_trayek)
+                  ->where('nomor_bis', '=', $nomor_bis)
+                  ->update(array(
+                    'jumlah_kursi' => $jumlah_kursi
+                ));
 
         return back();
     }
@@ -90,12 +101,16 @@ class BisController extends Controller
         }
         $data['bis'] = Bis::all();
     	$data['trayek'] = json_encode($array_trayek);
-    	$data['bis_berangkat'] = BisBerangkat::whereDate('tanggal', '>=', date('Y-m-d'))
-    										 
+    	$data['bis_berangkat'] = BisBerangkat::select('bis_berangkat.kode_trayek','alias', 'slug_jenis_bis', 'tanggal', 'jumlah_kursi', 'bis_id', 'jadwal', 'nomor_bis')
+                                            ->leftJoin('jenis_bis_trayek', 'jenis_bis_trayek.id', '=', 'bis_berangkat.jenis_bis_trayek_id')
+                                            ->leftJoin('trayek', 'trayek.id', '=', 'jenis_bis_trayek.trayek_id')
+                                            ->whereDate('tanggal', '>=', date('Y-m-d'))
                                              ->orderBy('tanggal', 'ASC')
                                              ->orderBy('jenis_bis_trayek_id', 'ASC')
                                              ->orderBy('nomor_bis', 'ASC')
+                                             ->distinct()
     										 ->get();
+
         $data['menu'] = 'unit-bis';
 
     	return view('bis-berangkat', $data);
@@ -175,12 +190,23 @@ class BisController extends Controller
 
     public function updateBisBerangkat(Request $request)
     {
-        $id = $request->id;
+        $kode_trayek = $request->kode_trayek;
+        $tanggal = Convert::tgl_ind_to_eng($request->tanggal);
+        $nomor_bis = $request->nomor_bis;
         $bis_id = $request->bis_id;
+        
+        BisBerangkat::where('kode_trayek', '=', $kode_trayek)
+                    ->where('tanggal', '=', $tanggal)
+                    ->where('nomor_bis', '=', $nomor_bis)
+                    ->update(array(
+                        'bis_id' => $bis_id
+                    ));
+        // $id = $request->id;
+        // $bis_id = $request->bis_id;
 
-        $bis = BisBerangkat::find($id);
-        $bis->bis_id = $bis_id;
-        $bis->save();
+        // $bis = BisBerangkat::find($id);
+        // $bis->bis_id = $bis_id;
+        // $bis->save();
 
         return back();
     }

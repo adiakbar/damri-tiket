@@ -29,7 +29,7 @@ class PetugasController extends Controller
     {
     	$password = bcrypt($request->password);
     	$level = $request->level;
-    	
+    
     	$user = User::find($request->id);
     	$user->password = $password;
     	$user->level = $level;

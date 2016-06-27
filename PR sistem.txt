@@ -3,48 +3,30 @@ PR
 
 Pesan Tiket
 ===============
-7. Buat Cetak tiket (ukuran printer roll - plus barcode)
+1. Testing Printer
+2. Perbaiki Layout Bis Sambas
+3. Keluar tooltip penumpang
+4. kolom tempat tanggal lahir
 
 Data Pesanan
 ================
-1. Buat aja dulu mockup data pesanan menggunakan data table
-2. Ada menu searching berdasarkan tanggal dan trayek tujuan
-3. Buat proses change booking to cash
-4. Buat proses batal tiket
-5. Buat proses pindah kursi pesanan (edit penumpang)
+1. Dipisahkan antara penumpan yang booking dengan penumpang yang cash pake tab
+2. Export ke PDF data penumpang yang berangkat
 
 Trayek (create, update, delete) == Root
 ==============
-1. Detail trayek di buat menu select box aja biar ndak semak macam itu
-2. Di buat proses tambah, edit, delete trayek
-3. Di buat proses tambah, edit, delete detail trayek
-4. Buat Algoritma Kode Trayek (alias_jenis_bis+alias_asal+jam+alias_tujuan)
-
 
 Unit Bis
 ==============
-1. Buat mockup data bis (bis, jenis bis, bis default, bis berangkat)
-2. Buat proses tambah, edit, delete Bis
-3. Buat proses tambah, edit, delete Jenis Bis
-4. Buat proses tambah, edit, delete Bis Default
-5. Buat proses tambah, edit, delete Bis Berangkat
+
 
 Petugas
 ==============
-1. Crud Petugas
-2. level (root, superadmin,admin, petugas)
+1. Tidak bisa update password
 
 Log
 ==============
-1. Mencatat semua aktivitas kecuali root (tersedia hanya si superadmin)
-
-Profile
-==============
-1. Ganti password saja
-
-Halaman Login
-===============
-Atur yang bagus jak lah, bukan pake email tapi pake username
+1. Log Aktifitas Bis
 
 
 V2 (Untuk Startup)
@@ -55,6 +37,8 @@ V2 (Untuk Startup)
 4. Pelajari Reset Password via email
 
 
+membuat edit bis default
+backup data yang udah di input
 
 
 

@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/batal-tiket', 'TiketController@batalTiket');
 
 	Route::get('pesanan', 'TiketController@dataPesanan');
+	Route::get('pesanan-export', 'TiketController@pesananExport');
 
 	Route::get('trayek', 'TrayekController@index');
 	Route::post('trayek', 'TrayekController@insertTrayek');
@@ -56,8 +57,15 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('log-pesanan-data', 'LogController@logPesananData');
 	
 	Route::get('log-administrasi', 'LogController@logAdministrasi');
+
+	
 });
 
+Route::get('tes-pdf', function() {
+	$pdf = App::make('dompdf.wrapper');
+	$pdf->loadHTML('<h1>Test</h1>');
+	return $pdf->stream();
+});
 
 // Route::get('daftar', function() {
 // 	$data = [

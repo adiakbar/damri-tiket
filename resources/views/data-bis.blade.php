@@ -60,9 +60,14 @@
 						<div class="form-group">
 							<label for="">Jumlah Kursi</label>
 							<select name="jumlah_kursi" id="" class="form-control">
-									<option value="23">23</option>
-									<option value="31">31</option>
-									<option value="33">33</option>
+									<option value="22">22</option>
+						  		<option value="23">23</option>
+						  		<option value="25">25</option>
+						  		<option value="26">26</option>
+						  		<option value="31">31</option>
+						  		<option value="33">33</option>
+						  		<option value="34">34</option>
+						  		<option value="35">35</option>
 							</select>
 						</div>
 					</div>

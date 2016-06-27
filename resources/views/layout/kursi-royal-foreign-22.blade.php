@@ -98,8 +98,5 @@
 		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['8A'])) {{$kursi[$bis->nomor_bis]['8A']}} @endif" @if(isset($penumpang[$bis->nomor_bis]['8A'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['8A'].' ('.$telephone[$bis->nomor_bis]['8A'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['8A'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['8A'] }}</p></div>" @endif>
 			<input type="checkbox" value="8A" name="kursi[]" class="cek-kursi">8A
 		</div>
-		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['8B'])) {{$kursi[$bis->nomor_bis]['8B']}} @endif" @if(isset($penumpang[$bis->nomor_bis]['8B'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['8B'].' ('.$telephone[$bis->nomor_bis]['8B'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['8B'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['8B'] }}</p></div>" @endif>
-			<input type="checkbox" value="8B" name="kursi[]" class="cek-kursi">8B
-		</div>
 	</div>
 </div>

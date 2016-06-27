@@ -10,7 +10,7 @@
 <a href="{{ url('bis') }}" style="font-size:12px;">Bis</a>
 @endif
 
-@if(Auth::user()->level == 'admin' || Auth::user()->level == 'superadmin')
+@if(Auth::user()->level == 'admin' || Auth::user()->level == 'superadmin' || Auth::user()->level == 'root')
 <div class="row">
 	<div class="col-md-12">
 		<div class="row">
@@ -93,27 +93,23 @@
 			<table class="table table-striped" id="table-bis" style="font-size:13px;">
 				<thead>
 					<th>No.</th>
-					<th style="width:70px;">Tanggal</th>
+					<th>Tanggal</th>
+					<th>Trayek</th>
 					<th>Jenis Bis</th>
-					<th style="width:100px;">Trayek</th>
 					<th>Jadwal</th>
-					<th>Stasiun Asal</th>
-					<th>Stasiun Tujuan</th>
 					<th>Nomor Bis</th>
-					<th style="width:50px;">Plat Bis</th>
+					<th>Plat Bis</th>
 					<th>Jumlah Kursi</th>
-					<th style="width: 80px;"></th>
+					<th></th>
 				</thead>
 				<tbody>
 					@foreach($bis_berangkat as $key => $value)
 					<tr>
 						<td>{{ $key + 1 }}</td>
-						<td>{{ App\Convert::TanggalIndo($value->tanggal) }}</td>
-						<td>{{ $value->jenis_bis_trayek->jenis_bis->jenis }}</td>
-						<td>{{ $value->jenis_bis_trayek->trayek->alias  }}</td>
-						<td>{{ $value->jenis_bis_trayek->jadwal.' WIB'  }}</td>
-						<td>{{ $value->jenis_bis_trayek->stasiun_asal }}</td>
-						<td>{{ $value->jenis_bis_trayek->stasiun_tujuan }}</td>
+						<td>{{ \App\Convert::TanggalIndo($value->tanggal) }}</td>
+						<td>{{ $value->alias  }}</td>
+						<td>{{ ucwords(str_replace("-", " ", $value->slug_jenis_bis)) }}</td>
+						<td>{{ substr($value->jadwal,0,-3) }} WIB</td>
 						<td>{{ $value->nomor_bis }}</td>
 						@if($value->bis_id == 0)
 						<td> - </td>
@@ -123,8 +119,7 @@
 						<td>{{ $value->bis->jumlah_kursi }}</td>
 						@endif
 						<td>
-							<button class="btn btn-xs btn-warning btn-modal" data-toggle="modal" data-target="#myModal" data-id="{{ $value->id }}"data-jenis-bis="{{ $value->jenis_bis_trayek->jenis_bis->jenis }}" data-jadwal="{{ $value->jenis_bis_trayek->jadwal.' WIB' }}" data-stasiun-asal="{{ $value->jenis_bis_trayek->stasiun_asal }}" data-stasiun-tujuan="{{ $value->jenis_bis_trayek->stasiun_tujuan }}" data-nomor-bis="{{ $value->nomor_bis }}" data-tanggal="{{ App\Convert::tgl_eng_to_ind($value->tanggal) }}">Edit</button>
-							<button class="btn btn-xs btn-danger" onclick="deleteBisBerangkat({{$value->id}})">Delete</button>
+							<button class="btn btn-xs btn-warning btn-modal" data-toggle="modal" data-target="#myModal" data-tanggal="{{ App\Convert::tgl_eng_to_ind($value->tanggal) }}" data-nomor-bis="{{ $value->nomor_bis }}" data-jadwal="{{ substr($value->jadwal,0,-3).' WIB' }}" data-jenis-bis="{{ ucwords(str_replace("-", " ", $value->slug_jenis_bis)) }}" data-trayek="{{ $value->alias }}" data-kode-trayek="{{ $value->kode_trayek }}">Edit</button>
 						</td>
 					</tr>
 					@endforeach
@@ -150,7 +145,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 						 		<label for="" style="display:block">Tanggal</label>
-						 		<input type="text" id="modal_tanggal" name="tanggal" class="form-control" disabled>
+						 		<input type="text" id="modal_tanggal" class="form-control" disabled>
 						 	</div>
 						</div>
 						<div class="col-md-4">
@@ -164,13 +159,15 @@
 						  	<label for="">Plat Bis</label>
                 <select name="bis_id" id="" class="form-control selectpicker" data-live-search="true">
                     @foreach($bis as $value)
-                    <option value="{{ $value->id }}">{{ $value->plat }}</option>
+                    <option value="{{ $value->id }}">{{ $value->plat.' ('.$value->jenis_bis->jenis.' - '.$value->jumlah_kursi.')' }}</option>
                     @endforeach
                 </select>
 						  </div>
 						</div>
 					</div>
-					<input type="hidden" name="id" id="modal_id">
+					<input type="hidden" name="kode_trayek" id="modal_kode_trayek_input">
+					<input type="hidden" name="nomor_bis" id="modal_nomor_bis_input">
+					<input type="hidden" name="tanggal" id="modal_tanggal_input">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<input type="submit" value="Update" class="btn btn-primary">
 				</form>
@@ -213,18 +210,20 @@
 		$('.btn-modal').click(function() {
 			var jenis_bis = $(this).attr('data-jenis-bis');
 			var jadwal = $(this).attr('data-jadwal');
-			var stasiun_asal = $(this).attr('data-stasiun-asal');
-			var stasiun_tujuan = $(this).attr('data-stasiun-tujuan');
+			var trayek = $(this).attr('data-trayek');
+			var kode_trayek = $(this).attr('data-kode-trayek');
 			var nomor_bis = $(this).attr('data-nomor-bis');
 			var plat_bis = $(this).attr('data-plat-bis');
 			var tanggal = $(this).attr('data-tanggal');
-			var id = $(this).attr('data-id');
 
-			$('#modal_trayek').html("<b>"+jenis_bis+" | "+jadwal+"</b><p style='font-size:12px'>"+stasiun_asal+" - "+stasiun_tujuan+"</p>");
+			$('#modal_trayek').html("<b>"+jenis_bis+" | "+jadwal+"</b><p style='font-size:12px'>"+trayek+"</p>");
 			$('#modal_plat_bis').val(plat_bis);
 			$('#modal_tanggal').val(tanggal);
 			$('#modal_nomor_bis').val(nomor_bis);
-			$('#modal_id').val(id);
+			
+			$('#modal_nomor_bis_input').val(nomor_bis);
+			$('#modal_kode_trayek_input').val(kode_trayek);
+			$('#modal_tanggal_input').val(tanggal);
 		});
 
 	});

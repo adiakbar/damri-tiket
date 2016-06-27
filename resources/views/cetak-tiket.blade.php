@@ -42,10 +42,12 @@
 		<div class="box-detail-bis">
 			<div class="text-nomor-bis">{{ ($value->nomor_bis == 'Bis Default' ? '-' : $value->nomor_bis) }}</div>
 			<div class="text-jenis-bis">{{ $value->jenis_bis_trayek->jenis_bis->jenis }}</div>
+			<div>Jam: {{ $value->jenis_bis_trayek->jadwal }}</div>
 			<div class="text-kursi">Nomor Kursi: {{ $value->nomor_kursi }}</div>
 		</div>
 		<p class="text-keterangan">Simpan Karcis ini baik-baik. Sewaktu-waktu ditunjukan apabila ada pemeriksaan</p>
 	</div>
+	<div style="page-break-after:always;"></div>
 	@endforeach
 </body>
 </html>

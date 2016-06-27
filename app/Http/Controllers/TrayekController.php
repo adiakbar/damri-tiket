@@ -34,7 +34,7 @@ class TrayekController extends Controller
     	$trayek = Trayek::find($request->trayek_id);
     	$jenisBis = JenisBis::find($request->jenis_bis_id);
 
-    	$a = $jenisBis->alias;
+    	$a = $jenisBis->alias_jenis;
     	$b = strtoupper($trayek->alias_asal);
     	$c = substr($request->jadwal, 0, 2);
     	$d = strtoupper($trayek->alias_tujuan);

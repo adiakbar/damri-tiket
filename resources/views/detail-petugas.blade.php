@@ -22,7 +22,8 @@
 						<label for="">Password Baru</label>
 						<input type="password" name="password" class="form-control" required="">
 					</div>
-					<input type="hidden" name="id">
+					<input type="hidden" name="id" value="{{ Auth::user()->id }}">
+					<input type="hidden" name="level" value="{{ Auth::user()->level }}">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<input type="submit" value="Reset Password" class="btn btn-primary">
 				</form>

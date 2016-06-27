@@ -42,12 +42,14 @@
 			  <div class="form-group">
 			  	<label for="">Jumlah Kursi</label>
 			  	<select name="jumlah_kursi" id="" class="form-control selectpicker">
+			  		<option value="22">22</option>
 			  		<option value="23">23</option>
 			  		<option value="25">25</option>
 			  		<option value="26">26</option>
 			  		<option value="31">31</option>
 			  		<option value="33">33</option>
 			  		<option value="34">34</option>
+			  		<option value="35">35</option>
 			  	</select>
 			  </div>
 
@@ -71,14 +73,12 @@
 		<div class="box-content">
 			<h4 style="color: #3498db;">Bis Default</h4>
 
-			<table class="table" id="table-bis">
+			<table class="table">
 				<thead>
 					<th>No.</th>
 					<th>Trayek</th>
 					<th>Jenis Bis</th>
 					<th>Jadwal</th>
-					<th>Stasiun Asal</th>
-					<th>Stasiun Tujuan</th>
 					<th>Nomor Bis</th>
 					<th style="width: 20px;">Jumlah Kursi</th>
 					<th></th>
@@ -87,15 +87,13 @@
 					@foreach($bis_default as $key => $value)
 					<tr>
 						<td>{{ $key + 1 }}</td>
-						<td>{{ $value->jenis_bis_trayek->trayek->alias }}</td>
-						<td>{{ $value->jenis_bis_trayek->jenis_bis->jenis }}</td>
-						<td>{{ $value->jenis_bis_trayek->jadwal.' WIB' }}</td>
-						<td>{{ $value->jenis_bis_trayek->stasiun_asal }}</td>
-						<td>{{ $value->jenis_bis_trayek->stasiun_tujuan }}</td>
+						<td>{{ $value->alias }}</td>
+						<td>{{ ucwords(str_replace("-", " ", $value->slug_jenis_bis)) }}</td>
+						<td>{{ substr($value->jadwal,0,-3) }} WIB</td>
 						<td>{{ $value->nomor_bis }}</td>
 						<td>{{ $value->jumlah_kursi }}</td>
 						<td>
-							<button class="btn btn-xs btn-warning btn-modal" data-toggle="modal" data-target="#myModal" data-jumlah-kursi="{{ $value->jumlah_kursi }}" data-jenis-bis="{{ $value->jenis_bis_trayek->jenis_bis->jenis }}" data-jadwal="{{ $value->jenis_bis_trayek->jadwal.' WIB' }}" data-stasiun-asal="{{ $value->jenis_bis_trayek->stasiun_asal }}" data-stasiun-tujuan="{{ $value->jenis_bis_trayek->stasiun_tujuan }}" data-nomor-bis="{{ $value->nomor_bis }}" data-id="{{ $value->id }}">Edit</button>
+							<button class="btn btn-xs btn-warning btn-modal" data-toggle="modal" data-target="#myModal" data-nomor-bis="{{ $value->nomor_bis }}" data-jumlah-kursi="{{ $value->jumlah_kursi }}" data-jadwal="{{ substr($value->jadwal,0,-3).' WIB' }}" data-jenis-bis="{{ ucwords(str_replace("-", " ", $value->slug_jenis_bis)) }}" data-trayek="{{ $value->alias }}" data-kode-trayek="{{ $value->kode_trayek }}">Edit</button>
 						</td>
 					</tr>
 					@endforeach
@@ -121,28 +119,27 @@
 						<div class="col-md-6">
 							<div class="form-group">
 						  	<label for="">Nomor Bis</label>
-						  	<select name="nomor_bis" id="modal_nomor_bis" class="form-control">
-						  		@for($i = 1; $i<=16; $i++)
-						  		<option value="Bis {{ $i }}">Bis {{ $i }}</option>
-						  		@endfor
-						  	</select>
+						  	<input type="text" id="modal_nomor_bis" class="form-control" disabled="">
 						  </div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 						  	<label for="">Jumlah Kursi</label>
 						  	<select name="jumlah_kursi" id="modal_jumlah_kursi" class="form-control">
+						  		<option value="22">22</option>
 						  		<option value="23">23</option>
 						  		<option value="25">25</option>
 						  		<option value="26">26</option>
 						  		<option value="31">31</option>
 						  		<option value="33">33</option>
 						  		<option value="34">34</option>
+						  		<option value="35">35</option>
 						  	</select>
 						  </div>
 						</div>
 					</div>
-					<input type="hidden" name="id" id="modal_id">
+					<input type="hidden" name="kode_trayek" id="modal_kode_trayek_input">
+					<input type="hidden" name="nomor_bis" id="modal_nomor_bis_input">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<input type="submit" value="Update" class="btn btn-primary">
 				</form>
@@ -188,15 +185,16 @@
 			var jumlah_kursi = $(this).attr('data-jumlah-kursi');
 			var jenis_bis = $(this).attr('data-jenis-bis');
 			var jadwal = $(this).attr('data-jadwal');
-			var stasiun_asal = $(this).attr('data-stasiun-asal');
-			var stasiun_tujuan = $(this).attr('data-stasiun-tujuan');
+			var trayek = $(this).attr('data-trayek');
+			var kode_trayek = $(this).attr('data-kode-trayek');
 			var nomor_bis = $(this).attr('data-nomor-bis');
-			var id = $(this).attr('data-id');
 
 			$('#modal_nomor_bis').val(nomor_bis);
-			$('#modal_trayek').html("<b>"+jenis_bis+" | "+jadwal+"</b><p style='font-size:12px'>"+stasiun_asal+" - "+stasiun_tujuan+"</p>");
+			$('#modal_trayek').html("<b>"+jenis_bis+" | "+jadwal+"</b><p style='font-size:12px'>"+trayek+"</p>");
 			$('#modal_jumlah_kursi').val(jumlah_kursi);
-			$('#modal_id').val(id);
+
+			$('#modal_nomor_bis_input').val(nomor_bis);
+			$('#modal_kode_trayek_input').val(kode_trayek);
 		});
 
 	})

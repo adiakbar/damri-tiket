@@ -26,7 +26,7 @@
 			<p class="text-labelbis">{{ $value->jenis_bis_trayek->jenis_bis->jenis }}</p>
 			<p class="text-labelkursi">{{ $value->nomor_kursi }}</p>
 			<p class="text-label">{{ App\Convert::TanggalIndo($value->tanggal) }}</p>
-			<p style="font-size:12px;">{{ $value->jenis_bis_trayek->stasiun_asal.' - '.$value->jenis_bis_trayek->stasiun_tujuan }}</p>
+			<p style="font-size:12px;">{{ $value->jenis_bis_trayek->stasiun_asal.' - '.$value->jenis_bis_trayek->stasiun_tujuan.' ('.$value->jenis_bis_trayek->jadwal.')' }}</p>
 			<p class="text-label">Nama</p>
 			<p>{{ $value->penumpang }}</p>
 			<p class="text-label">Kode Tiket</p>

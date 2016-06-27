@@ -10,11 +10,7 @@ class Trayek extends Model {
     protected $fillable = ['asal', 'tujuan', 'alias_asal', 'alias_tujuan', 'alias', 'slug_alias'];
     protected $hidden = ['created_at'];
 
-    // public function setUpdatedAt($value){}
-
-    public function getUpdatedAtColumn() {
-        return null;
-    }
+    public function setUpdatedAt($value){}
 
     public function jenis_bis_trayek()
     {

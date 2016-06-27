@@ -163,7 +163,7 @@ a:hover {
 	margin-top: 20px;
 }
 .bus-title {
-	font-size: 16px;
+	font-size: 25px;
 	font-weight: 600;
 	padding-bottom: 5px;
 	margin: 0;
@@ -173,13 +173,16 @@ a:hover {
 /* Style Kursi*/
 .container-kursi {
 	 width: 100%; 
+
 	 display: inline-block;
 	 /*outline: 1px solid #000;*/
-	 overflow: auto;
+	 z-index: 100;
+	 /*overflow: auto;*/
 }
 .baris {
 	/*outline: 1px solid red;*/
 	padding: 5px 0;
+	margin-left: 50px;
 	overflow: auto;
 }
 .pintu {
@@ -207,7 +210,7 @@ a:hover {
 	padding-left: 5px;
 }
 .space {
-	margin-right: 40px;
+	margin-right: 47px;
 }
 .cek-kursi {
 	display: none;
@@ -223,6 +226,8 @@ a:hover {
 }
 .slider-bis {
 	width: 100% !important;
+	z-index: 100;
+	/*overflow: auto !important;*/
 	/*margin-left: 10px !important;*/
 }
 .cover {
@@ -346,6 +351,13 @@ a:hover {
 }
 .collapse-icon {
 	display: none;
+}
+.tooltip-inner {
+    min-width: 100px;
+    /*position: absolute;*/
+}
+.box-tooltip p {
+	margin-bottom: 0;
 }
 
 

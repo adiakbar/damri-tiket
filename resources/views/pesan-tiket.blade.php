@@ -7,17 +7,17 @@
 <div class="row">
 
 	<!-- col-md-4 -->
-	<div class="col-md-4" >
+	<div class="col-md-3" >
 		<!-- box-form-filter-keberangkatan -->
 		<div class="box-content" @if(isset($Bis)) style="display:none;" @endif>
 			<form>
 				<div class="form-group">
 			    <label for="">Tanggal : </label>
-			    <input type="text" name="tanggal" class="form-control" data-provide="datepicker" data-date-format="dd-mm-yyyy" placeholder="Tanggal Berangkat">
+			    <input type="text" name="tanggal" class="form-control" data-provide="datepicker" data-date-format="dd-mm-yyyy" placeholder="Tanggal Berangkat" required="">
 			  </div>
 				<div class="form-group">
 			    <label for="">Trayek : </label>
-			    <select id="trayek" class="form-control selectpicker" data-live-search="true">
+			    <select id="trayek" class="form-control selectpicker" data-live-search="true" required="">
 			    	<option> -- Pilih Trayek -- </option>
 			    </select>
 			  </div>
@@ -45,7 +45,7 @@
 	<!-- end-col-md-4 -->
 
 	<!-- col-md-8 -->
-	<div class="col-md-8">
+	<div class="col-md-9">
 
 		<div class="box-content">
 
@@ -53,7 +53,7 @@
 				
 				<div class="row">
 					
-					<div class="col-md-4">
+					<div class="col-md-5">
 						<div class="slider-bis">
 							@foreach($Bis as $bis)
 	              @if($bis->id == 0)
@@ -82,7 +82,7 @@
               @endif
 					</div>
 					
-					<div class="col-md-8">
+					<div class="col-md-7">
 						<form style="margin-top: 15px;" action="pesan-tiket" method="POST" id="form-pesan-tiket">
 							@if(session('warning'))
 								<div class="alert alert-danger" style="padding: 5px;">
@@ -133,6 +133,20 @@
 						  		<div class="form-group">
 								    <label for="">Masa Berlaku : </label>
 								    <input type="text" name="masa_berlaku" class="form-control" placeholder="Masa Berlaku" value="{{ Request::old('masa_berlaku') }}">
+								  </div>
+						  	</div>
+						  </div>
+						  <div class="row">
+						  	<div class="col-md-6">
+						  		<div class="form-group">
+								    <label for="">Tempat Lahir </label>
+								    <input type="text" name="tempat_lahir" class="form-control" placeholder="Tempat Lahir" value="{{ Request::old('passport') }}">
+								  </div>
+						  	</div>
+						  	<div class="col-md-6">
+						  		<div class="form-group">
+								    <label for="">Tanggal Lahir </label>
+								    <input type="text" name="tanggal_lahir" class="form-control" data-provide="datepicker" data-date-format="dd MM yyyy" placeholder="Tanggal Lahir" value="{{ Request::old('tanggal_lahir') }}">
 								  </div>
 						  	</div>
 						  </div>
@@ -235,6 +249,14 @@
 				}
 			}
 		});
+
+
+    $('[data-toggle="tooltip"]').tooltip({
+		    animated: 'fade',
+		    placement: 'top',
+		    html: true
+		}); 
+		
 
 		$('.slider-bis').cycle({ 
 			    fx: 'scrollLeft',

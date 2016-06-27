@@ -308,16 +308,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "31382fef2889136415751badebbd1cb022a4ed72"
+                "reference": "5c6447c9df362e8f8093bda8f5d8873fe5c7f65b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/31382fef2889136415751badebbd1cb022a4ed72",
-                "reference": "31382fef2889136415751badebbd1cb022a4ed72",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/5c6447c9df362e8f8093bda8f5d8873fe5c7f65b",
+                "reference": "5c6447c9df362e8f8093bda8f5d8873fe5c7f65b",
                 "shasum": ""
             },
             "require": {
@@ -333,7 +333,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -362,7 +362,7 @@
                 "stream",
                 "uri"
             ],
-            "time": "2016-04-13 19:56:01"
+            "time": "2016-06-24 23:00:38"
         },
         {
             "name": "intervention/image",
@@ -2513,16 +2513,16 @@
         },
         {
             "name": "yajra/laravel-datatables-oracle",
-            "version": "v6.11.6",
+            "version": "v6.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables.git",
-                "reference": "6d9a36aa921ffc703e722a0f34d2dc56112562c6"
+                "reference": "b4a58ea33dc6a550fb82baa2cd54e9288b3ddc80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/6d9a36aa921ffc703e722a0f34d2dc56112562c6",
-                "reference": "6d9a36aa921ffc703e722a0f34d2dc56112562c6",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/b4a58ea33dc6a550fb82baa2cd54e9288b3ddc80",
+                "reference": "b4a58ea33dc6a550fb82baa2cd54e9288b3ddc80",
                 "shasum": ""
             },
             "require": {
@@ -2566,7 +2566,7 @@
                 "laravel4",
                 "laravel5"
             ],
-            "time": "2016-06-18 11:40:02"
+            "time": "2016-06-25 08:13:11"
         }
     ],
     "packages-dev": [
