@@ -31,7 +31,7 @@
 	<!-- kursi 3 -->
 	<div class="baris">
 		<div class="pintu" style="margin-top: 8px; margin-right: 37px;">Pintu Tengah</div>
-		<div class="kursi" @if(isset($kursi[$bis->nomor_bis]['3C'])) {{ $kursi[$bis->nomor_bis]['3C'] }} @endif" @if(isset($kursi[$bis->nomor_bis]['3C'])) {{$kursi[$bis->nomor_bis]['3C']}} @endif" @if(isset($penumpang[$bis->nomor_bis]['3C'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['3C'].' ('.$telephone[$bis->nomor_bis]['3C'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['3C'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['3C'] }}</p></div>" @endif>
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['3C'])) {{ $kursi[$bis->nomor_bis]['3C'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['3C'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['3C'].' ('.$telephone[$bis->nomor_bis]['3C'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['3C'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['3C'] }}</p></div>" @endif>
 			<input type="checkbox" value="3C" name="kursi[]" class="cek-kursi">3C
 		</div>
 		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['3D'])) {{ $kursi[$bis->nomor_bis]['3D'] }} @endif" @if(isset($kursi[$bis->nomor_bis]['3D'])) {{$kursi[$bis->nomor_bis]['3D']}} @endif" @if(isset($penumpang[$bis->nomor_bis]['3D'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['3D'].' ('.$telephone[$bis->nomor_bis]['3D'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['3D'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['3D'] }}</p></div>" @endif>

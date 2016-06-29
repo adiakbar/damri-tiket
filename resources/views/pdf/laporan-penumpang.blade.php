@@ -40,7 +40,7 @@
 	<h2 style="text-align: center; text-decoration:underline; margin-top: 10px;">DAFTAR MUATAN BUS</h2>
 	<div style="position: absolute; font-size: 30px; left: 20px; top: 20px;" >{{$bus}}</div>
 	<div style="position: absolute; left:540px; top: 20px;">
-		<p><span style="width: 50px; display:inline-block" ;>Seri</span>: <b>H</b>.................. <b>AP/3</b></p>
+		<p><span style="width: 50px; display:inline-block" ;>Seri</span>: <b>H</b><span style="color:#c0392b;"> {{$seri[$bus]}} </span><b>AP/3</b></p>
 		<p><span style="width: 50px; display:inline-block" ;>Nomor</span>: ..............................</p>
 	</div>
 	<table class="table-header">
@@ -94,11 +94,11 @@
 			<td>{{$penumpang->jenis_bis_trayek->stasiun_asal}}</td>
 			<td>{{$penumpang->jenis_bis_trayek->stasiun_tujuan}}</td>
 			<td>{{$penumpang->nomor_kursi}}</td>
-			<td>-</td>
+			<td></td>
 			<td>{{ "Rp ".number_format($penumpang->jenis_bis_trayek->harga,0,',','.') }}</td>
-			<td>-</td>
-			<td>-</td>
-			<td>{{($penumpang->keterangan == '' ? '-' : $penumpang->keterangan)}}</td>
+			<td></td>
+			<td></td>
+			<td></td>
 		</tr>
 		@endforeach
 		@for($i=1; $i<=35-count($Penumpang); $i++)

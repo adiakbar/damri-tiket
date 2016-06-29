@@ -99,7 +99,6 @@ class TiketController extends Controller
                 $data['tujuan'][$kursi->nomor_bis][$kursi->nomor_kursi] = $kursi->domisili_tujuan;
               }
 
-              
               $data['tanggal'] = $tanggal;
               $data['data_trayek'] = $data_trayek;
               $data['jenis_bis_trayek_id'] = $jenis_bis_trayek_id;
@@ -165,7 +164,14 @@ class TiketController extends Controller
                           ->whereIn('nomor_kursi', $nomor_kursi)
                           ->get();
         // print_r($pesanan);
+
+        // datalink
+        $tanggal_link = \App\Convert::tgl_eng_to_ind($tanggal);
+        $bis_trayek_link = $jenis_bis_trayek_id;
+
         return view('bayar-tiket')->with('pesanan', $pesanan)
+                                  ->with('tanggal_link', $tanggal_link)
+                                  ->with('bis_trayek_link', $bis_trayek_link)
                                   ->with('menu', 'pesan-tiket');
       }
       else
@@ -241,11 +247,6 @@ class TiketController extends Controller
 
     public function dataPesanan(Request $request)
     {
-      // $Trayek = DB::table('trayek')->whereIn('id',[1,2,8])->get();
-      // foreach($Trayek as $trayek)
-      // {
-        
-      // }
 
       $Trayek1 = DB::table('jenis_bis_trayek')
                   ->leftJoin('trayek', 'jenis_bis_trayek.trayek_id', '=', 'trayek.id')
@@ -255,7 +256,13 @@ class TiketController extends Controller
 
 
 
-      $Trayek2 = DB::table('trayek')->whereNotIn('id', [1,2,8,9,10])->get();
+      $Trayek2 = DB::table('jenis_bis_trayek')
+                  ->select('alias', 'kode_trayek', 'jadwal', 'jenis')
+                  ->leftJoin('trayek', 'jenis_bis_trayek.trayek_id', '=', 'trayek.id')
+                  ->leftJoin('jenis_bis', 'jenis_bis_trayek.jenis_bis_id', '=', 'jenis_bis.id')
+                  ->whereNotIn('trayek.id', [1,2,8,9,10])
+                  ->distinct()
+                  ->get();
 
         // Cek Pesanan
         if(isset($request->kode_trayek) && isset($request->tanggal))
@@ -312,9 +319,6 @@ class TiketController extends Controller
             }
         }
 
-        // $data['trayek'] = json_encode($array_trayek);
-        // print_r($data['trayek']);
-        // die();
         $data['Trayek1'] = $Trayek1;
         $data['Trayek2'] = $Trayek2;
         $data['menu'] = 'data-pesanan';
@@ -331,7 +335,7 @@ class TiketController extends Controller
         {
             $pesan = Pesanan::find($value);
             $pesan->delete();
-
+            
             // Log
             DB::table('log_pesanan')->insert(array(
                     'petugas' => Auth::user()->petugas,
@@ -341,7 +345,6 @@ class TiketController extends Controller
         }
 
         return back();
-        // print_r($data);
     }
 
     public function pesananExport(Request $request)
@@ -355,6 +358,13 @@ class TiketController extends Controller
                           ->where('kode_trayek', '=',  $kode_trayek)
                           ->distinct()
                           ->get();
+
+      $cek_seri = DB::table('document_ap3')
+                          ->where('tanggal', '=', $tanggal)
+                          ->where('kode_trayek', '=', $kode_trayek)
+                          ->count();
+
+      $last_seri = DB::table('document_ap3')->orderBy('id', 'DESC')->first()->seri;
 
       foreach($nomor_bis as $value)
       {
@@ -373,12 +383,33 @@ class TiketController extends Controller
                                          ->where('pesanan.nomor_bis', '=', $value->nomor_bis)
                                          ->where('pesanan.status', '=', 'cash')
                                          ->sum('harga');
+
         $jmlPnp[$value->nomor_bis] = DB::table('pesanan')
                                         ->where('tanggal', '=', $tanggal)
                                         ->where('kode_trayek', '=',  $kode_trayek)
                                         ->where('nomor_bis', '=', $value->nomor_bis)
                                         ->where('status', '=', 'cash')
                                         ->count();
+
+        if($cek_seri == 0)
+        {
+          $last_seri++;
+          DB::table('document_ap3')->insert(array(
+              'kode_trayek' => $kode_trayek,
+              'tanggal' => $tanggal,
+              'nomor_bis' => $value->nomor_bis,
+              'seri' => $last_seri
+          ));
+          $seri[$value->nomor_bis] = $last_seri;
+        }
+        else
+        {
+          $seri[$value->nomor_bis] = DB::table('document_ap3')
+                                        ->where('tanggal', '=', $tanggal)
+                                        ->where('kode_trayek', '=', $kode_trayek)
+                                        ->where('nomor_bis', '=', $value->nomor_bis)
+                                        ->first()->seri;
+        }
       }
       
       $data['pnpCash'] = $pnpCash;
@@ -386,6 +417,7 @@ class TiketController extends Controller
       $data['tanggal'] = $tanggal;
       $data['jmlHarga'] = $jmlHarga;
       $data['data_trayek'] = $data_trayek;
+      $data['seri'] = $seri;
 
     	$pdf = \App::make('dompdf.wrapper');
 			$pdf->loadView('pdf.laporan-penumpang', $data);

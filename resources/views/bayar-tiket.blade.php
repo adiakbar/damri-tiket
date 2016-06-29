@@ -10,7 +10,7 @@
 
 <h2 class="content-title" style="display: inline-block">Tiket</h2>
 
-	<a href="{{ url('/') }}" class="btn btn-danger" style="float:right; margin-left: 10px;">Selesai</a>
+	<a href="{{ url('/?tanggal='.$tanggal_link.'&bis_trayek='.$bis_trayek_link.'&_token='.csrf_token()) }}" class="btn btn-danger" style="float:right; margin-left: 10px;">Selesai</a>
 	<form action="" style="float:right;">
 		<input type="hidden" id="pesanan_id" name="pesanan_id">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">

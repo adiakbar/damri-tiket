@@ -40,8 +40,8 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('bis-berangkat', 'BisController@bisBerangkat');
 	Route::post('bis-berangkat', 'BisController@insertBisBerangkat');
 	Route::post('bis-tambahan', 'BisController@insertBisTambahan');
-	Route::post('bis-berangkat-update', 'BisController@updateBisBerangkat');
-	Route::get('bis-berangkat-delete/{id}', 'BisController@deleteBisBerangkat');
+	Route::post('bis-berangkat/update', 'BisController@updateBisBerangkat');
+	Route::get('bis-berangkat/delete', 'BisController@deleteBisBerangkat');
 	Route::get('bis', 'BisController@dataBis');
 	Route::post('bis', 'BisController@insertDataBis');
 	Route::get('bis-delete/{id}', 'BisController@deleteDataBis');

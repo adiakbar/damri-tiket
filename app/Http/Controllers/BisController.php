@@ -166,7 +166,18 @@ class BisController extends Controller
                             ->count();
 
             $kode_trayek = JenisBisTrayek::find($jenis_bis_trayek_id)->kode_trayek;
-            $bis_default = BisDefault::where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)->first();
+            if($kode_trayek == 'RYL-FRGN-PTK-07-KCH')
+            {
+                $slug_jenis_bis = 'royal-foreign';
+                $jumlah_kursi = '22';
+            }
+            else
+            {
+                $bis_default = BisDefault::where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)->first();
+                $slug_jenis_bis = $bis_default->slug_jenis_bis;
+                $jumlah_kursi = $bis_default->jumlah_kursi;
+            }
+            
             // echo $cek;
             if($cek == 0)
             {
@@ -175,10 +186,9 @@ class BisController extends Controller
                     'nomor_bis' => $nomor_bis,
                     'kode_trayek' => $kode_trayek,
                     'tanggal' => $tanggal,
-                    'slug_jenis_bis' => $bis_default->slug_jenis_bis,
-                    'jumlah_kursi' => $bis_default->jumlah_kursi
-                ));
-                
+                    'slug_jenis_bis' => $slug_jenis_bis,
+                    'jumlah_kursi' => $jumlah_kursi
+                )); 
             }
             else
             {
@@ -201,20 +211,20 @@ class BisController extends Controller
                     ->update(array(
                         'bis_id' => $bis_id
                     ));
-        // $id = $request->id;
-        // $bis_id = $request->bis_id;
-
-        // $bis = BisBerangkat::find($id);
-        // $bis->bis_id = $bis_id;
-        // $bis->save();
 
         return back();
     }
 
-    public function deleteBisBerangkat($id)
+    public function deleteBisBerangkat(Request $request)
     {
-        $bis = BisBerangkat::find($id);
-        $bis->delete();
+        $kode_trayek = $request->kode_trayek;
+        $tanggal = Convert::tgl_ind_to_eng($request->tanggal);
+        $nomor_bis = $request->nomor_bis;
+
+        BisBerangkat::where('kode_trayek', '=', $kode_trayek)
+                    ->where('tanggal', '=', $tanggal)
+                    ->where('nomor_bis', '=', $nomor_bis)
+                    ->delete();
 
         return back();
     }

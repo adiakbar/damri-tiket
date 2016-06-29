@@ -25,7 +25,7 @@
 						@endif
 					 	<div class="form-group">
 					 		<label for="" style="display:block">Tanggal</label>
-					 		<input type="text" name="tanggal" class="form-control" data-provide="datepicker" data-date-format="dd-mm-yyyy" placeholder="Tanggal Berangkat">
+					 		<input type="text" name="tanggal" class="form-control" data-provide="datepicker" data-date-format="dd-mm-yyyy" placeholder="Tanggal Berangkat" required="">
 					 	</div>
 
 					  <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -39,7 +39,7 @@
 					<form action="{{ url('bis-tambahan') }}" method="POST" class="form-inline">
 					<div class="form-group">
               <label for="">Trayek : </label>
-              <select id="trayek" class="form-control selectpicker" data-live-search="true">
+              <select id="trayek" class="form-control selectpicker" data-live-search="true" required="">
                   <option> -- Pilih Trayek -- </option>
               </select>
           </div>
@@ -47,7 +47,7 @@
               
           <div class="form-group">
             <label for="">Nomor Bis</label>
-            <select name="nomor_bis" id="" class="form-control selectpicker" data-live-search="true">
+            <select name="nomor_bis" id="" class="form-control selectpicker" data-live-search="true" required="">
                <option value="Bis 5">Bis 5</option>
                <option value="Bis 6">Bis 6</option>
                <option value="Bis 7">Bis 7</option>
@@ -65,7 +65,7 @@
 					
 					<div class="form-group">
 				 		<label for="" style="display:block">Tanggal</label>
-				 		<input type="text" name="tanggal" class="form-control" data-provide="datepicker" data-date-format="dd-mm-yyyy" placeholder="Tanggal Berangkat">
+				 		<input type="text" name="tanggal" class="form-control" data-provide="datepicker" data-date-format="dd-mm-yyyy" placeholder="Tanggal Berangkat" required="">
 				 	</div>
 
 				 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -120,6 +120,7 @@
 						@endif
 						<td>
 							<button class="btn btn-xs btn-warning btn-modal" data-toggle="modal" data-target="#myModal" data-tanggal="{{ App\Convert::tgl_eng_to_ind($value->tanggal) }}" data-nomor-bis="{{ $value->nomor_bis }}" data-jadwal="{{ substr($value->jadwal,0,-3).' WIB' }}" data-jenis-bis="{{ ucwords(str_replace("-", " ", $value->slug_jenis_bis)) }}" data-trayek="{{ $value->alias }}" data-kode-trayek="{{ $value->kode_trayek }}">Edit</button>
+							<button class="btn btn-xs btn-danger btn-hapus-bis" data-tanggal="{{ App\Convert::tgl_eng_to_ind($value->tanggal) }}" data-nomor-bis="{{ $value->nomor_bis }}" data-kode-trayek="{{ $value->kode_trayek }}">hapus</button>
 						</td>
 					</tr>
 					@endforeach
@@ -138,7 +139,7 @@
 				<h4 class="modal-title">Edit Bis Berangkat</h4>
 			</div>
 			<div class="modal-body">
-				<form action="{{ url('bis-berangkat-update') }}" method="POST">
+				<form action="{{ url('bis-berangkat/update') }}" method="POST">
 					<div id="modal_trayek"></div>
 					
 					<div class="row">
@@ -226,16 +227,21 @@
 			$('#modal_tanggal_input').val(tanggal);
 		});
 
+		$('.btn-hapus-bis').click(function() {
+			var kode_trayek = $(this).attr('data-kode-trayek');
+			var nomor_bis = $(this).attr('data-nomor-bis');
+			var tanggal = $(this).attr('data-tanggal');
+
+			var c = confirm("Apakah anda yakin ingin menghapus bis berangkat?");
+			if(c == true)
+			{
+				window.location = base_url+'/bis-berangkat/delete?kode_trayek='+kode_trayek+'&nomor_bis='+nomor_bis+'&tanggal='+tanggal;
+				return true;
+			}
+			return false;
+		});
+
 	});
-		
-	function deleteBisBerangkat(id)
-	{
-		var c = confirm("Apakah anda yakin ingin menghapus bis berangkat?");
-		if(c = true)
-		{
-			window.location = base_url+'/bis-berangkat-delete/'+id;
-		}
-	}
 
 </script>
 

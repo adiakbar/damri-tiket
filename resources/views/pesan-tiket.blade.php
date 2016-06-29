@@ -38,7 +38,7 @@
 			<p><b>Harga</b> : {{ "Rp ".number_format($data_trayek->harga,0,',','.') }}</p>
 			<p style="margin-bottom:0;"><b>{{ $data_trayek->jenis_bis->jenis.' | '. $data_trayek->jadwal.' WIB' }}</b></p>
 			<p style="font-size:12px;">{{ $data_trayek->stasiun_asal.' - '.$data_trayek->stasiun_tujuan }}</p>
-			<p><b>Jumlah Bis Berangkat</b> : {{ count($Bis).' Bis' }}</p>
+			<p><b>Jumlah Bis Berangkat</b> : <span style="font-size: 25px;">{{ count($Bis).' Bis' }}</span></p>
 		</div>
 		@endif
 	</div>
@@ -75,7 +75,7 @@
 
 	           </div>
 	           @if(count($Bis) > 1)
-              	<div class="navBis">
+              	<div class="navBis" style="text-align: center;">
                   <a id="prev2" href="#">Prev</a>
                   <a id="next2" href="#">Next</a>
                 </div> 

@@ -25,7 +25,7 @@
 				    	<option value="{{ $trayek->kode_trayek }}">{{$trayek->stasiun_asal.' - '.$trayek->stasiun_tujuan.' '. substr($trayek->jadwal,0,-3).' ('.$trayek->jenis.')' }}</option>
 				    	@endforeach
 				    	@foreach($Trayek2 as $trayek)
-				    	<option value="">{{ $trayek->alias }}</option>
+				    	<option value="{{ $trayek->kode_trayek }}">{{$trayek->alias.' '. substr($trayek->jadwal,0,-3).' ('.$trayek->jenis.')' }}</option>
 				    	@endforeach
 				    </select>
 					</div>
@@ -83,7 +83,7 @@
 				<form action="{{ url('batal-tiket') }}" method="POST" style="float:right;">
 					<input type="hidden" id="pesanan_delete_id" name="pesanan_id">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					<button class="btn btn-danger" id="btn_batal_tiket" style="margin-right: 20px; margin-bottom:20px;">Batal Tiket</button >
+					<button class="btn btn-danger btn_batal_tiket" style="margin-right: 20px; margin-bottom:20px;">Batal Tiket</button >
 				</form>
 				@foreach($pnpBooking as $bus => $Penumpang)
 				<h3 class="bus-title" style="border-bottom:none;">{{$bus}}</h3>
@@ -127,9 +127,9 @@
 			<div style="padding:20px;">
 				<!-- batal tiket -->
 				<form action="{{ url('batal-tiket') }}" method="POST" style="float:right;">
-					<input type="hidden" id="pesanan_delete_id" name="pesanan_id">
+					<input type="hidden" id="pesanan_delete_id_cash" name="pesanan_id">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					<button class="btn btn-danger" id="btn_batal_tiket" style="margin-right: 20px; margin-bottom:20px;">Batal Tiket</button >
+					<button class="btn btn-danger btn_batal_tiket" style="margin-right: 20px; margin-bottom:20px;">Batal Tiket</button >
 				</form>
 				<a href="{{ url('pesanan-export?tanggal='.$tanggal.'&kode_trayek='.$data_trayek->kode_trayek) }}" class="btn btn-success pull-right" style="margin-right: 20px;" target="_blank"> Cetak AP/3</a>
 				@foreach($pnpCash as $bus => $Penumpang)
@@ -219,7 +219,7 @@
 
 			$('#pesanan_booking_id').val(tiket.join());
 			$('#pesanan_delete_id').val(tiket.join());
-			
+			$('#pesanan_delete_id_cash').val(tiket.join());
 		});
 
 		$('#btn_bayar_tiket').click(function() {
@@ -256,7 +256,7 @@
 			}
 		});
 
-		$('#btn_batal_tiket').click(function() {
+		$('.btn_batal_tiket').click(function() {
 			var c = confirm("Apakah Anda yakin akan membatalkan tiket ini?");
 			if(c == true)
 			{
