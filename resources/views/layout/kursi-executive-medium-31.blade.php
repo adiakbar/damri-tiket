@@ -36,7 +36,12 @@
 	</div>
 	<!-- kursi 3 -->
 	<div class="baris">
-		<div class="pintu" style="margin-top: 8px; margin-right: 37px;">Pintu Tengah</div>
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['3A'])) {{ $kursi[$bis->nomor_bis]['3A'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['3A'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['3A'].' ('.$telephone[$bis->nomor_bis]['3A'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['3A'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['3A'] }}</p></div>" @endif>
+			<input type="checkbox" value="3A" name="kursi[]" class="cek-kursi">3A
+		</div>
+		<div class="kursi space @if(isset($kursi[$bis->nomor_bis]['3B'])) {{ $kursi[$bis->nomor_bis]['3B'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['3B'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['3B'].' ('.$telephone[$bis->nomor_bis]['3B'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['3B'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['3B'] }}</p></div>" @endif>
+			<input type="checkbox" value="3B" name="kursi[]" class="cek-kursi">3B
+		</div>
 		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['3C'])) {{ $kursi[$bis->nomor_bis]['3C'] }} @endif" @if(isset($kursi[$bis->nomor_bis]['3C'])) {{$kursi[$bis->nomor_bis]['3C']}} @endif" @if(isset($penumpang[$bis->nomor_bis]['3C'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['3C'].' ('.$telephone[$bis->nomor_bis]['3C'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['3C'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['3C'] }}</p></div>" @endif>
 			<input type="checkbox" value="3C" name="kursi[]" class="cek-kursi">3C
 		</div>
@@ -46,13 +51,8 @@
 	</div>
 	<!-- kursi 4 -->
 	<div class="baris">
-		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['4A'])) {{ $kursi[$bis->nomor_bis]['4A'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['4A'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['4A'].' ('.$telephone[$bis->nomor_bis]['4A'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['4A'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['4A'] }}</p></div>" @endif>
-			<input type="checkbox" value="4A" name="kursi[]" class="cek-kursi">4A
-		</div>
-		<div class="kursi space @if(isset($kursi[$bis->nomor_bis]['4B'])) {{ $kursi[$bis->nomor_bis]['4B'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['4B'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['4B'].' ('.$telephone[$bis->nomor_bis]['4B'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['4B'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['4B'] }}</p></div>" @endif>
-			<input type="checkbox" value="4B" name="kursi[]" class="cek-kursi">4B
-		</div>
-		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['4C'])) {{ $kursi[$bis->nomor_bis]['4C'] }} @endif" @if(isset($kursi[$bis->nomor_bis]['4C'])) {{$kursi[$bis->nomor_bis]['4C']}} @endif" @if(isset($penumpang[$bis->nomor_bis]['4C'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['4C'].' ('.$telephone[$bis->nomor_bis]['4C'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['4C'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['4C'] }}</p></div>" @endif>
+		<div class="pintu" style="margin-top: 8px; margin-right: 37px;">Pintu Tengah</div>
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['4C'])) {{ $kursi[$bis->nomor_bis]['4C'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['4C'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['4C'].' ('.$telephone[$bis->nomor_bis]['4C'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['4C'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['4C'] }}</p></div>" @endif>
 			<input type="checkbox" value="4C" name="kursi[]" class="cek-kursi">4C
 		</div>
 		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['4D'])) {{ $kursi[$bis->nomor_bis]['4D'] }} @endif" @if(isset($kursi[$bis->nomor_bis]['4D'])) {{$kursi[$bis->nomor_bis]['4D']}} @endif" @if(isset($penumpang[$bis->nomor_bis]['4D'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['4D'].' ('.$telephone[$bis->nomor_bis]['4D'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['4D'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['4D'] }}</p></div>" @endif>
@@ -100,8 +100,26 @@
 		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['7C'])) {{ $kursi[$bis->nomor_bis]['7C'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['7C'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['7C'].' ('.$telephone[$bis->nomor_bis]['7C'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['7C'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['7C'] }}</p></div>" @endif>
 			<input type="checkbox" value="7C" name="kursi[]" class="cek-kursi">7C
 		</div>
-		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['7C'])) {{ $kursi[$bis->nomor_bis]['7C'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['7D'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['7D'].' ('.$telephone[$bis->nomor_bis]['7D'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['7D'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['7D'] }}</p></div>" @endif>
-			<input type="checkbox" value="7C" name="kursi[]" class="cek-kursi">7C
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['7D'])) {{ $kursi[$bis->nomor_bis]['7D'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['7D'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['7D'].' ('.$telephone[$bis->nomor_bis]['7D'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['7D'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['7D'] }}</p></div>" @endif>
+			<input type="checkbox" value="7D" name="kursi[]" class="cek-kursi">7D
+		</div>
+	</div>
+	<!-- kursi 8 -->
+	<div class="baris">
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['8A'])) {{ $kursi[$bis->nomor_bis]['8A'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['8A'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['8A'].' ('.$telephone[$bis->nomor_bis]['8A'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['8A'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['8A'] }}</p></div>" @endif>
+			<input type="checkbox" value="8A" name="kursi[]" class="cek-kursi">8A
+		</div>
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['8B'])) {{ $kursi[$bis->nomor_bis]['8B'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['8B'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['8B'].' ('.$telephone[$bis->nomor_bis]['8B'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['8B'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['8B'] }}</p></div>" @endif>
+			<input type="checkbox" value="8B" name="kursi[]" class="cek-kursi">8B
+		</div>
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['8C'])) {{ $kursi[$bis->nomor_bis]['8C'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['8C'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['8C'].' ('.$telephone[$bis->nomor_bis]['8C'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['8C'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['8C'] }}</p></div>" @endif>
+			<input type="checkbox" value="8C" name="kursi[]" class="cek-kursi">8C
+		</div>
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['8D'])) {{ $kursi[$bis->nomor_bis]['8D'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['8D'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['8D'].' ('.$telephone[$bis->nomor_bis]['8D'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['8D'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['8D'] }}</p></div>" @endif>
+			<input type="checkbox" value="8D" name="kursi[]" class="cek-kursi">8D
+		</div>
+		<div class="kursi @if(isset($kursi[$bis->nomor_bis]['8E'])) {{ $kursi[$bis->nomor_bis]['8E'] }} @endif" @if(isset($penumpang[$bis->nomor_bis]['8E'])) data-toggle="tooltip" title="<div class='box-tooltip'><p>{{ $penumpang[$bis->nomor_bis]['8E'].' ('.$telephone[$bis->nomor_bis]['8E'].')' }}</p><p>Asal: {{ $asal[$bis->nomor_bis]['8E'] }}</p><p>Tujuan: {{ $tujuan[$bis->nomor_bis]['8E'] }}</p></div>" @endif>
+			<input type="checkbox" value="8E" name="kursi[]" class="cek-kursi">8E
 		</div>
 	</div>
 </div>

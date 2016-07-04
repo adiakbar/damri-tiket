@@ -52,10 +52,11 @@
                <option value="Bis 6">Bis 6</option>
                <option value="Bis 7">Bis 7</option>
                <option value="Bis 8">Bis 8</option>
-               <option value="Bis 8">Bis 11</option>
-               <option value="Bis 8">Bis 12</option>
-               <option value="Bis 8">Bis 13</option>
-               <option value="Bis 8">Bis 14</option>
+                <option value="Bis 10">Bis 10</option>
+               <option value="Bis 11">Bis 11</option>
+               <option value="Bis 12">Bis 12</option>
+               <option value="Bis 13">Bis 13</option>
+               <option value="Bis 14">Bis 14</option>
                <option value="Bis Tambahan 1">Bis Tambahan 1</option>
                <option value="Bis Tambahan 2">Bis Tambahan 2</option>
                <option value="Bis Tambahan 3">Bis Tambahan 3</option>
@@ -119,8 +120,8 @@
 						<td>{{ $value->bis->jumlah_kursi }}</td>
 						@endif
 						<td>
-							<button class="btn btn-xs btn-warning btn-modal" data-toggle="modal" data-target="#myModal" data-tanggal="{{ App\Convert::tgl_eng_to_ind($value->tanggal) }}" data-nomor-bis="{{ $value->nomor_bis }}" data-jadwal="{{ substr($value->jadwal,0,-3).' WIB' }}" data-jenis-bis="{{ ucwords(str_replace("-", " ", $value->slug_jenis_bis)) }}" data-trayek="{{ $value->alias }}" data-kode-trayek="{{ $value->kode_trayek }}">Edit</button>
-							<button class="btn btn-xs btn-danger btn-hapus-bis" data-tanggal="{{ App\Convert::tgl_eng_to_ind($value->tanggal) }}" data-nomor-bis="{{ $value->nomor_bis }}" data-kode-trayek="{{ $value->kode_trayek }}">hapus</button>
+							<button class="btn btn-xs btn-warning btn-modal" data-toggle="modal" data-target="#myModal" data-tanggal="{{ App\Convert::tgl_eng_to_ind($value->tanggal) }}" data-nomor-bis="{{ $value->nomor_bis }}" data-jadwal="{{ substr($value->jadwal,0,-3).' WIB' }}" data-jenis-bis="{{ ucwords(str_replace("-", " ", $value->slug_jenis_bis)) }}" data-trayek="{{ $value->alias }}" data-kode-trayek="{{ $value->kode_trayek }}" data-id="{{ $value->id }}">Edit</button>
+							<button class="btn btn-xs btn-danger btn-hapus-bis" data-tanggal="{{ App\Convert::tgl_eng_to_ind($value->tanggal) }}" data-kode-trayek="{{ $value->kode_trayek }}" data-nomor-bis="{{ $value->nomor_bis }}">hapus</button>
 						</td>
 					</tr>
 					@endforeach
@@ -152,13 +153,34 @@
 						<div class="col-md-4">
 							<div class="form-group">
 						  	<label for="">Nomor Bis</label>
-						  	<input type="text" id="modal_nomor_bis" class="form-control" disabled>
+						  	<select name="nomor_bis" id="modal_nomor_bis" class="form-control" required="">
+               <option value="Bis Default">Bis Default</option>
+               <option value="Bis 1">Bis 1</option>
+               <option value="Bis 2">Bis 2</option>
+               <option value="Bis 3">Bis 3</option>
+               <option value="Bis 4">Bis 4</option>
+               <option value="Bis 5">Bis 5</option>
+               <option value="Bis 6">Bis 6</option>
+               <option value="Bis 7">Bis 7</option>
+               <option value="Bis 8">Bis 8</option>
+               <option value="Bis 9">Bis 9</option>
+               <option value="Bis 10">Bis 10</option>
+               <option value="Bis 11">Bis 11</option>
+               <option value="Bis 12">Bis 12</option>
+               <option value="Bis 13">Bis 13</option>
+               <option value="Bis 14">Bis 14</option>
+               <option value="Bis Tambahan 1">Bis Tambahan 1</option>
+               <option value="Bis Tambahan 2">Bis Tambahan 2</option>
+               <option value="Bis Tambahan 3">Bis Tambahan 3</option>
+               <option value="Bis Tambahan 4">Bis Tambahan 4</option>
+            </select>
 						  </div>
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
 						  	<label for="">Plat Bis</label>
                 <select name="bis_id" id="" class="form-control selectpicker" data-live-search="true">
+                		<option value="0">Belum ada Plat Bis</option>
                     @foreach($bis as $value)
                     <option value="{{ $value->id }}">{{ $value->plat.' ('.$value->jenis_bis->jenis.' - '.$value->jumlah_kursi.')' }}</option>
                     @endforeach
@@ -167,7 +189,7 @@
 						</div>
 					</div>
 					<input type="hidden" name="kode_trayek" id="modal_kode_trayek_input">
-					<input type="hidden" name="nomor_bis" id="modal_nomor_bis_input">
+					<input type="hidden" name="nomor_bis_old" id="modal_nomor_bis_input">
 					<input type="hidden" name="tanggal" id="modal_tanggal_input">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<input type="submit" value="Update" class="btn btn-primary">

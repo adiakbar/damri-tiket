@@ -47,7 +47,7 @@
 		<tr>
 			<td style="width: 30px;">Loket</td>
 			<td style="width: 5px;">:</td>
-			<td>..............................</td>
+			<td>{{ $data_trayek->trayek->asal }}</td>
 			<td style="width: 70px;">Bus Code</td>
 			<td style="width: 5px;">:</td>
 			<td>..............................</td>
@@ -61,7 +61,7 @@
 			<td>{{ \App\Convert::TanggalIndo($tanggal) }}</td>
 			<td style="width: 70px;">Formasi</td>
 			<td style="width: 5px;">:</td>
-			<td>..............................</td>
+			<td>@if(isset($formasi[$bus]) && $formasi[$bus]->bis_id != 0) {{ $formasi[$bus]->bis->plat }} @endif</td>
 			<td style="width: 30px;">Ke</td>
 			<td style="width: 5px;">:</td>
 			<td>{{ $data_trayek->trayek->tujuan }}</td>

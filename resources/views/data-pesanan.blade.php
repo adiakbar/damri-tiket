@@ -35,12 +35,8 @@
 				 		<input type="text" name="tanggal" class="form-control" data-provide="datepicker" data-date-format="dd-mm-yyyy" placeholder="Tanggal Berangkat" required="">
 				 	</div>
 
-				  
 				  <input type="submit" class="btn btn-primary" value="Lihat Pesanan" style="margin-top: 25px;">
 
-				  <!-- <div class="form-group" style="display:block">
-				    <div id="input-bis-trayek"></div>
-				  </div> -->
 				  <input type="hidden" name="_token" value="{{ csrf_token() }}">
 				</form>
 			</div>
@@ -114,7 +110,10 @@
 							<td>{{ ($penumpang->masa_berlaku == '' ? '-' : $penumpang->masa_berlaku) }}</td>
 							<td>{{ ($penumpang->keterangan == '' ? '-' : $penumpang->keterangan) }}</td>
 							<td>{{ $penumpang->petugas->petugas }}</td>
-							<td><input type="checkbox" value="{{ $penumpang->id }}" name="pesanan[]" style="display:none;"></td>
+							<td>
+								<input type="checkbox" value="{{ $penumpang->id }}" name="pesanan[]" style="display:none;">
+								<a href="{{ url('/edit-tiket?pesanan_id='.$penumpang->id) }}">Edit</a>
+							</td>
 						</tr>
 						@endforeach
 					</tbody>
@@ -132,6 +131,7 @@
 					<button class="btn btn-danger btn_batal_tiket" style="margin-right: 20px; margin-bottom:20px;">Batal Tiket</button >
 				</form>
 				<a href="{{ url('pesanan-export?tanggal='.$tanggal.'&kode_trayek='.$data_trayek->kode_trayek) }}" class="btn btn-success pull-right" style="margin-right: 20px;" target="_blank"> Cetak AP/3</a>
+				<button class="btn btn-primary pull-right" id="btn-cetak-pesanan" style="margin-right: 20px;" data-kode-trayek="{{ $data_trayek->kode_trayek }}" data-tanggal="{{ $tanggal }}">Cetak Pesanan</button>
 				@foreach($pnpCash as $bus => $Penumpang)
 				<h3 class="bus-title" style="border-bottom:none;">{{$bus}}</h3>
 				<table class="table table-bordered" style="font-size:13px;">
@@ -172,7 +172,10 @@
 							<td>-</td>
 							<td>{{ ($penumpang->keterangan == '' ? '-' : $penumpang->keterangan) }}</td>
 							<td>{{ $penumpang->petugas->petugas }}</td>
-							<td><input type="checkbox" value="{{ $penumpang->id }}" name="pesanan[]" style="display:none;"></td>
+							<td>
+								<input type="checkbox" value="{{ $penumpang->id }}" name="pesanan[]" style="display:none;">
+								<a href="{{ url('/edit-tiket?pesanan_id='.$penumpang->id) }}">Edit</a>
+							</td>
 						</tr>
 						@endforeach
 						<tr>
@@ -263,7 +266,15 @@
 				$(this).parent().submit();
 			}
 			return false;
+		});
+
+		$('#btn-cetak-pesanan').click(function() {
+			var kode_trayek = $(this).attr('data-kode-trayek');
+			var tanggal = $(this).attr('data-tanggal');
+
+			window.open('pesanan-cetak?kode_trayek='+kode_trayek+'&tanggal='+tanggal,'print','location=0');
 		})
+
 	});
 
 </script>

@@ -64,10 +64,13 @@
 						  		<option value="23">23</option>
 						  		<option value="25">25</option>
 						  		<option value="26">26</option>
+						  		<option value="29">29</option>
 						  		<option value="31">31</option>
 						  		<option value="33">33</option>
 						  		<option value="34">34</option>
 						  		<option value="35">35</option>
+						  		<option value="40">40</option>
+						  		<option value="48">48</option>
 							</select>
 						</div>
 					</div>

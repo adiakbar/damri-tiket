@@ -27,17 +27,18 @@
 	// $('#table-log').DataTable({"iDisplayLength": 100});
 	$('#table-log').DataTable({
 		"iDisplayLength": 100,
+		"order": [[ 6, "desc" ]]
 		processing: true,
         serverSide: true,
         ajax: 'log-pesanan-data',
         columns: [
         	{data: 'petugas', name: 'petugas'},
-        	{data: 'aktivitas', name: 'petugas'},
-        	{data: 'jenis_bis_trayek.jenis_bis.jenis', name: 'jenis_bis'},
-        	{data: 'jenis_bis_trayek.jadwal', name: 'jenis_bis'},
-        	{data: 'jenis_bis_trayek.stasiun_asal', name: 'stasiun_asal'},
-        	{data: 'jenis_bis_trayek.stasiun_tujuan', name: 'stasiun_tujuan'},
-        	{data: 'created_at', name: 'dsf'},
+        	{data: 'aktivitas', name: 'aktivitas'},
+        	{data: 'jenis', name: 'jenis'},
+        	{data: 'jadwal', name: 'jadwal'},
+        	{data: 'stasiun_asal', name: 'stasiun_asal'},
+        	{data: 'stasiun_tujuan', name: 'stasiun_tujuan'},
+        	{data: 'created_at', name: 'created_at'},
         ]
 	})
 </script>

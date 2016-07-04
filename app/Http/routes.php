@@ -20,13 +20,16 @@ Route::get('/', 'TiketController@index');
 
 Route::group(['middleware' => 'auth'], function() {
 
-	Route::post('/pesan-tiket', 'TiketController@pesanTiket');
-	Route::post('/bayar-tiket', 'TiketController@bayarTiket');
-	Route::get('/cetak-tiket', 'TiketController@cetakTiket');
-	Route::post('/batal-tiket', 'TiketController@batalTiket');
+	Route::post('pesan-tiket', 'TiketController@pesanTiket');
+	Route::post('bayar-tiket', 'TiketController@bayarTiket');
+	Route::get('cetak-tiket', 'TiketController@cetakTiket');
+	Route::post('batal-tiket', 'TiketController@batalTiket');
+	Route::get('edit-tiket', 'TiketController@editTiket');
+	Route::post('update-tiket', 'TiketController@updateTiket');
 
 	Route::get('pesanan', 'TiketController@dataPesanan');
 	Route::get('pesanan-export', 'TiketController@pesananExport');
+	Route::get('pesanan-cetak', 'TiketController@pesananCetak');
 
 	Route::get('trayek', 'TrayekController@index');
 	Route::post('trayek', 'TrayekController@insertTrayek');

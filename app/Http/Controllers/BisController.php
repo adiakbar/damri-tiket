@@ -203,13 +203,23 @@ class BisController extends Controller
         $kode_trayek = $request->kode_trayek;
         $tanggal = Convert::tgl_ind_to_eng($request->tanggal);
         $nomor_bis = $request->nomor_bis;
+        $nomor_bis_old = $request->nomor_bis_old;
         $bis_id = $request->bis_id;
         
         BisBerangkat::where('kode_trayek', '=', $kode_trayek)
                     ->where('tanggal', '=', $tanggal)
-                    ->where('nomor_bis', '=', $nomor_bis)
+                    ->where('nomor_bis', '=', $nomor_bis_old)
                     ->update(array(
-                        'bis_id' => $bis_id
+                        'bis_id' => $bis_id,
+                        'nomor_bis' => $nomor_bis
+                    ));
+
+        Pesanan::where('kode_trayek', '=', $kode_trayek)
+                    ->where('tanggal', '=', $tanggal)
+                    ->where('nomor_bis', '=', $nomor_bis_old)
+                    ->update(array(
+                        'bis_id' => $bis_id,
+                        'nomor_bis' => $nomor_bis
                     ));
 
         return back();
@@ -251,7 +261,7 @@ class BisController extends Controller
         // delete di bis
         Bis::find($id)->delete();
         // delete juga di bis berangkat
-        BisBerangkat::where('bis_id', '=', $id)->delete();
+        BisBerangkat::where('bis_id', '=', $id)->update(array('bis_id' => 0));
         // update pesanan di bis id = id menjadi 0
         Pesanan::where('bis_id', '=', $id)->update(array('bis_id' => 0));
 

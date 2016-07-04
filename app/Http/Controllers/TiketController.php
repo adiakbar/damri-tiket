@@ -83,6 +83,8 @@ class TiketController extends Controller
                                               ->get();
 
                 $data['Bis'] = $bis_berangkat;
+                // return $bis_berangkat;
+                // die();
               }
 
                 // status kursi
@@ -347,6 +349,31 @@ class TiketController extends Controller
         return back();
     }
 
+    public function editTiket(Request $request)
+    {
+      $id = $request->pesanan_id;
+      $pesanan = Pesanan::find($id);
+
+      return view('edit-tiket')->with('pesanan', $pesanan)
+                               ->with('menu', 'data-pesanan');
+    }
+
+    public function updateTiket(Request $request)
+    {
+      $data = $request->all();
+      $id = $request->id;
+      
+      Pesanan::find($id)->update($data);
+
+      DB::table('log_pesanan')->insert(array(
+                'petugas' => Auth::user()->petugas,
+                'aktivitas' => 'Edit tiket atas nama '.$request->penumpang.' dengan nomor kursi '.$request->kursi.' untuk tanggal '.\App\Convert::TanggalIndo($request->tanggal),
+                'jenis_bis_trayek_id' => $request->jenis_bis_trayek_id
+      ));
+
+      return redirect('pesanan?tanggal='.\App\Convert::tgl_eng_to_ind($request->tanggal).'&kode_trayek='.$request->kode_trayek.'&_token='.csrf_token());
+    }
+
     public function pesananExport(Request $request)
     {
     	$tanggal = $request->tanggal;
@@ -358,16 +385,14 @@ class TiketController extends Controller
                           ->where('kode_trayek', '=',  $kode_trayek)
                           ->distinct()
                           ->get();
-
-      $cek_seri = DB::table('document_ap3')
-                          ->where('tanggal', '=', $tanggal)
-                          ->where('kode_trayek', '=', $kode_trayek)
-                          ->count();
-
-      $last_seri = DB::table('document_ap3')->orderBy('id', 'DESC')->first()->seri;
-
       foreach($nomor_bis as $value)
       {
+        $cek_seri = DB::table('document_ap3')
+                          ->where('tanggal', '=', $tanggal)
+                          ->where('kode_trayek', '=', $kode_trayek)
+                          ->where('nomor_bis', '=', $value->nomor_bis)
+                          ->count();
+
         $data['pesanan'] = 'pesanan';
         $pnpCash[$value->nomor_bis] = Pesanan::where('tanggal', '=', $tanggal)
                                               ->where('kode_trayek', '=',  $kode_trayek)
@@ -375,6 +400,11 @@ class TiketController extends Controller
                                               ->where('status', '=', 'cash')
                                               ->orderBy('nomor_kursi', 'ASC')
                                               ->get();
+
+        $formasi[$value->nomor_bis] = BisBerangkat::where('tanggal', '=', $tanggal)
+                                                  ->where('kode_trayek', '=', $kode_trayek)
+                                                  ->where('nomor_bis', '=', $value->nomor_bis)
+                                                  ->first();
 
         $jmlHarga[$value->nomor_bis] = DB::table('pesanan')
                                          ->leftJoin('jenis_bis_trayek', 'pesanan.jenis_bis_trayek_id', '=', 'jenis_bis_trayek.id')
@@ -391,6 +421,7 @@ class TiketController extends Controller
                                         ->where('status', '=', 'cash')
                                         ->count();
 
+        $last_seri = DB::table('document_ap3')->orderBy('id', 'DESC')->first()->seri;
         if($cek_seri == 0)
         {
           $last_seri++;
@@ -409,18 +440,55 @@ class TiketController extends Controller
                                         ->where('kode_trayek', '=', $kode_trayek)
                                         ->where('nomor_bis', '=', $value->nomor_bis)
                                         ->first()->seri;
+
         }
       }
-      
       $data['pnpCash'] = $pnpCash;
       $data['jmlPnp'] = $jmlPnp;
       $data['tanggal'] = $tanggal;
       $data['jmlHarga'] = $jmlHarga;
       $data['data_trayek'] = $data_trayek;
       $data['seri'] = $seri;
+      $data['formasi'] = $formasi;
 
     	$pdf = \App::make('dompdf.wrapper');
 			$pdf->loadView('pdf.laporan-penumpang', $data);
 			return $pdf->stream();
+    }
+
+    public function pesananCetak(Request $request)
+    {
+      $tanggal = $request->tanggal;
+      $kode_trayek = $request->kode_trayek;
+      $data_trayek = JenisBisTrayek::where('kode_trayek', '=', $kode_trayek)->first();
+
+      $nomor_bis = Pesanan::select('nomor_bis')
+                          ->where('tanggal', '=', $tanggal)
+                          ->where('kode_trayek', '=',  $kode_trayek)
+                          ->distinct()
+                          ->get();
+
+      foreach($nomor_bis as $value)
+      {
+        $pnpCash[$value->nomor_bis] = Pesanan::where('tanggal', '=', $tanggal)
+                                              ->where('kode_trayek', '=',  $kode_trayek)
+                                              ->where('nomor_bis', '=', $value->nomor_bis)
+                                              ->where('status', '=', 'cash')
+                                              ->orderBy('nomor_kursi', 'ASC')
+                                              ->get();
+
+        $jmlPnp[$value->nomor_bis] = DB::table('pesanan')
+                                        ->where('tanggal', '=', $tanggal)
+                                        ->where('kode_trayek', '=',  $kode_trayek)
+                                        ->where('nomor_bis', '=', $value->nomor_bis)
+                                        ->where('status', '=', 'cash')
+                                        ->count();
+      }
+      $data['pnpCash'] = $pnpCash;
+      $data['tanggal'] = $tanggal;
+      $data['jmlPnp'] = $jmlPnp;
+      $data['data_trayek'] = $data_trayek;
+
+      return view('cetak-pesanan', $data);
     }
 }

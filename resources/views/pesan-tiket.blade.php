@@ -56,7 +56,7 @@
 					<div class="col-md-5">
 						<div class="slider-bis">
 							@foreach($Bis as $bis)
-	              @if($bis->id == 0)
+	              @if($bis->bis_id == 0)
 	              	<?php
 	                  $jenis = $bis->slug_jenis_bis;
 	                  $jumlah_kursi = $bis->jumlah_kursi;
@@ -69,8 +69,6 @@
 	              @endif
 	              
 	             	@include('layout.kursi-'.$jenis.'-'.$jumlah_kursi)
-	             	
-	              
 	            @endforeach
 
 	           </div>
@@ -83,7 +81,7 @@
 					</div>
 					
 					<div class="col-md-7">
-						<form style="margin-top: 15px;" action="pesan-tiket" method="POST" id="form-pesan-tiket">
+						<form style="margin-top: 15px;" action="{{ url('pesan-tiket') }}" method="POST" id="form-pesan-tiket">
 							@if(session('warning'))
 								<div class="alert alert-danger" style="padding: 5px;">
 							        {{ session('warning') }}
@@ -140,7 +138,7 @@
 						  	<div class="col-md-6">
 						  		<div class="form-group">
 								    <label for="">Tempat Lahir </label>
-								    <input type="text" name="tempat_lahir" class="form-control" placeholder="Tempat Lahir" value="{{ Request::old('passport') }}">
+								    <input type="text" name="tempat_lahir" class="form-control" placeholder="Tempat Lahir" value="{{ Request::old('tempat_lahir') }}">
 								  </div>
 						  	</div>
 						  	<div class="col-md-6">
