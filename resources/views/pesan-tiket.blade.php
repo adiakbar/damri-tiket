@@ -120,6 +120,7 @@
 								  </div>
 						  	</div>
 						  </div>
+						  @if($data_trayek->trayek_id == 6 || $data_trayek->trayek_id == 7)
 						  <div class="row">
 						  	<div class="col-md-6">
 						  		<div class="form-group">
@@ -148,6 +149,7 @@
 								  </div>
 						  	</div>
 						  </div>
+						  @endif
 						  <div class="form-group">
 						    <label for="">Keterangan : </label>
 						    <textarea name="keterangan" class="form-control">{{ Request::old('keterangan') }}</textarea>

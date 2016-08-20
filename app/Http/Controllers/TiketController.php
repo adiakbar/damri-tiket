@@ -379,47 +379,42 @@ class TiketController extends Controller
     	$tanggal = $request->tanggal;
     	$kode_trayek = $request->kode_trayek;
       $data_trayek = JenisBisTrayek::where('kode_trayek', '=', $kode_trayek)->first();
+      $nomor_bis_link = $request->nomor_bis_link;
 
-      $nomor_bis = Pesanan::select('nomor_bis')
-                          ->where('tanggal', '=', $tanggal)
-                          ->where('kode_trayek', '=',  $kode_trayek)
-                          ->distinct()
-                          ->get();
-      foreach($nomor_bis as $value)
+      if(isset($nomor_bis_link))
       {
         $cek_seri = DB::table('document_ap3')
-                          ->where('tanggal', '=', $tanggal)
-                          ->where('kode_trayek', '=', $kode_trayek)
-                          ->where('nomor_bis', '=', $value->nomor_bis)
-                          ->count();
-
+                            ->where('tanggal', '=', $tanggal)
+                            ->where('kode_trayek', '=', $kode_trayek)
+                            ->where('nomor_bis', '=', $nomor_bis_link)
+                            ->count();
         $data['pesanan'] = 'pesanan';
-        $pnpCash[$value->nomor_bis] = Pesanan::where('tanggal', '=', $tanggal)
-                                              ->where('kode_trayek', '=',  $kode_trayek)
-                                              ->where('nomor_bis', '=', $value->nomor_bis)
-                                              ->where('status', '=', 'cash')
-                                              ->orderBy('nomor_kursi', 'ASC')
-                                              ->get();
+        $pnpCash[$nomor_bis_link] = Pesanan::where('tanggal', '=', $tanggal)
+                                                ->where('kode_trayek', '=',  $kode_trayek)
+                                                ->where('nomor_bis', '=', $nomor_bis_link)
+                                                ->where('status', '=', 'cash')
+                                                ->orderBy('nomor_kursi', 'ASC')
+                                                ->get();
 
-        $formasi[$value->nomor_bis] = BisBerangkat::where('tanggal', '=', $tanggal)
-                                                  ->where('kode_trayek', '=', $kode_trayek)
-                                                  ->where('nomor_bis', '=', $value->nomor_bis)
-                                                  ->first();
+        $formasi[$nomor_bis_link] = BisBerangkat::where('tanggal', '=', $tanggal)
+                                                    ->where('kode_trayek', '=', $kode_trayek)
+                                                    ->where('nomor_bis', '=', $nomor_bis_link)
+                                                    ->first();
 
-        $jmlHarga[$value->nomor_bis] = DB::table('pesanan')
-                                         ->leftJoin('jenis_bis_trayek', 'pesanan.jenis_bis_trayek_id', '=', 'jenis_bis_trayek.id')
-                                         ->where('pesanan.tanggal', '=', $tanggal)
-                                         ->where('pesanan.kode_trayek', '=',  $kode_trayek)
-                                         ->where('pesanan.nomor_bis', '=', $value->nomor_bis)
-                                         ->where('pesanan.status', '=', 'cash')
-                                         ->sum('harga');
+        $jmlHarga[$nomor_bis_link] = DB::table('pesanan')
+                                           ->leftJoin('jenis_bis_trayek', 'pesanan.jenis_bis_trayek_id', '=', 'jenis_bis_trayek.id')
+                                           ->where('pesanan.tanggal', '=', $tanggal)
+                                           ->where('pesanan.kode_trayek', '=',  $kode_trayek)
+                                           ->where('pesanan.nomor_bis', '=', $nomor_bis_link)
+                                           ->where('pesanan.status', '=', 'cash')
+                                           ->sum('harga');
 
-        $jmlPnp[$value->nomor_bis] = DB::table('pesanan')
-                                        ->where('tanggal', '=', $tanggal)
-                                        ->where('kode_trayek', '=',  $kode_trayek)
-                                        ->where('nomor_bis', '=', $value->nomor_bis)
-                                        ->where('status', '=', 'cash')
-                                        ->count();
+        $jmlPnp[$nomor_bis_link] = DB::table('pesanan')
+                                          ->where('tanggal', '=', $tanggal)
+                                          ->where('kode_trayek', '=',  $kode_trayek)
+                                          ->where('nomor_bis', '=', $nomor_bis_link)
+                                          ->where('status', '=', 'cash')
+                                          ->count();
 
         $last_seri = DB::table('document_ap3')->orderBy('id', 'DESC')->first()->seri;
         if($cek_seri == 0)
@@ -428,21 +423,90 @@ class TiketController extends Controller
           DB::table('document_ap3')->insert(array(
               'kode_trayek' => $kode_trayek,
               'tanggal' => $tanggal,
-              'nomor_bis' => $value->nomor_bis,
+              'nomor_bis' => $nomor_bis_link,
               'seri' => $last_seri
           ));
-          $seri[$value->nomor_bis] = $last_seri;
+          $seri[$nomor_bis_link] = $last_seri;
         }
         else
         {
-          $seri[$value->nomor_bis] = DB::table('document_ap3')
+          $seri[$nomor_bis_link] = DB::table('document_ap3')
                                         ->where('tanggal', '=', $tanggal)
                                         ->where('kode_trayek', '=', $kode_trayek)
-                                        ->where('nomor_bis', '=', $value->nomor_bis)
+                                        ->where('nomor_bis', '=', $nomor_bis_link)
                                         ->first()->seri;
 
         }
       }
+      else
+      {
+        $nomor_bis = Pesanan::select('nomor_bis')
+                    ->where('tanggal', '=', $tanggal)
+                    ->where('kode_trayek', '=',  $kode_trayek)
+                    ->distinct()
+                    ->get();
+
+        foreach($nomor_bis as $value)
+        {
+          $cek_seri = DB::table('document_ap3')
+                            ->where('tanggal', '=', $tanggal)
+                            ->where('kode_trayek', '=', $kode_trayek)
+                            ->where('nomor_bis', '=', $value->nomor_bis)
+                            ->count();
+
+          $data['pesanan'] = 'pesanan';
+          $pnpCash[$value->nomor_bis] = Pesanan::where('tanggal', '=', $tanggal)
+                                                ->where('kode_trayek', '=',  $kode_trayek)
+                                                ->where('nomor_bis', '=', $value->nomor_bis)
+                                                ->where('status', '=', 'cash')
+                                                ->orderBy('nomor_kursi', 'ASC')
+                                                ->get();
+
+          $formasi[$value->nomor_bis] = BisBerangkat::where('tanggal', '=', $tanggal)
+                                                    ->where('kode_trayek', '=', $kode_trayek)
+                                                    ->where('nomor_bis', '=', $value->nomor_bis)
+                                                    ->first();
+
+          $jmlHarga[$value->nomor_bis] = DB::table('pesanan')
+                                           ->leftJoin('jenis_bis_trayek', 'pesanan.jenis_bis_trayek_id', '=', 'jenis_bis_trayek.id')
+                                           ->where('pesanan.tanggal', '=', $tanggal)
+                                           ->where('pesanan.kode_trayek', '=',  $kode_trayek)
+                                           ->where('pesanan.nomor_bis', '=', $value->nomor_bis)
+                                           ->where('pesanan.status', '=', 'cash')
+                                           ->sum('harga');
+
+          $jmlPnp[$value->nomor_bis] = DB::table('pesanan')
+                                          ->where('tanggal', '=', $tanggal)
+                                          ->where('kode_trayek', '=',  $kode_trayek)
+                                          ->where('nomor_bis', '=', $value->nomor_bis)
+                                          ->where('status', '=', 'cash')
+                                          ->count();
+
+          $last_seri = DB::table('document_ap3')->orderBy('id', 'DESC')->first()->seri;
+          if($cek_seri == 0)
+          {
+            $last_seri++;
+            DB::table('document_ap3')->insert(array(
+                'kode_trayek' => $kode_trayek,
+                'tanggal' => $tanggal,
+                'nomor_bis' => $value->nomor_bis,
+                'seri' => $last_seri
+            ));
+            $seri[$value->nomor_bis] = $last_seri;
+          }
+          else
+          {
+            $seri[$value->nomor_bis] = DB::table('document_ap3')
+                                          ->where('tanggal', '=', $tanggal)
+                                          ->where('kode_trayek', '=', $kode_trayek)
+                                          ->where('nomor_bis', '=', $value->nomor_bis)
+                                          ->first()->seri;
+
+          }
+        }
+      }
+
+      
       $data['pnpCash'] = $pnpCash;
       $data['jmlPnp'] = $jmlPnp;
       $data['tanggal'] = $tanggal;
@@ -477,6 +541,13 @@ class TiketController extends Controller
                                               ->orderBy('nomor_kursi', 'ASC')
                                               ->get();
 
+        $pnpBrunei[$value->nomor_bis] = Pesanan::where('tanggal', '=', $tanggal)
+                                                ->where('jenis_bis_trayek_id', '=', 39)
+                                                ->where('nomor_bis', '=', $value->nomor_bis)
+                                                ->where('status', '=', 'cash')
+                                                ->orderBy('nomor_kursi', 'ASC')
+                                                ->get();
+
         $jmlPnp[$value->nomor_bis] = DB::table('pesanan')
                                         ->where('tanggal', '=', $tanggal)
                                         ->where('kode_trayek', '=',  $kode_trayek)
@@ -484,7 +555,10 @@ class TiketController extends Controller
                                         ->where('status', '=', 'cash')
                                         ->count();
       }
+
+     
       $data['pnpCash'] = $pnpCash;
+      $data['pnpBrunei'] = $pnpBrunei;
       $data['tanggal'] = $tanggal;
       $data['jmlPnp'] = $jmlPnp;
       $data['data_trayek'] = $data_trayek;

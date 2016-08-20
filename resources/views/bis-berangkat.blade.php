@@ -52,7 +52,8 @@
                <option value="Bis 6">Bis 6</option>
                <option value="Bis 7">Bis 7</option>
                <option value="Bis 8">Bis 8</option>
-                <option value="Bis 10">Bis 10</option>
+               <option value="Bis 9">Bis 9</option>
+               <option value="Bis 10">Bis 10</option>
                <option value="Bis 11">Bis 11</option>
                <option value="Bis 12">Bis 12</option>
                <option value="Bis 13">Bis 13</option>

@@ -134,6 +134,7 @@
 				<button class="btn btn-primary pull-right" id="btn-cetak-pesanan" style="margin-right: 20px;" data-kode-trayek="{{ $data_trayek->kode_trayek }}" data-tanggal="{{ $tanggal }}">Cetak Pesanan</button>
 				@foreach($pnpCash as $bus => $Penumpang)
 				<h3 class="bus-title" style="border-bottom:none;">{{$bus}}</h3>
+				<a href="{{ url('pesanan-export?tanggal='.$tanggal.'&kode_trayek='.$data_trayek->kode_trayek.'&nomor_bis_link='.$bus) }}" target="_blank"> Cetak AP/3 Per Bis</a>
 				<table class="table table-bordered" style="font-size:13px;">
 					<thead>
 						<tr>

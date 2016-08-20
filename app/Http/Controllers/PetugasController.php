@@ -43,6 +43,8 @@ class PetugasController extends Controller
     	$user = User::find($id);
     	$user->delete();
 
+        Pesanan::where('petugas_id', '=', $id)->update(array('petugas_id' => 2));
+
     	return back();
     }
 

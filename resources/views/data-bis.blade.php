@@ -69,6 +69,8 @@
 						  		<option value="33">33</option>
 						  		<option value="34">34</option>
 						  		<option value="35">35</option>
+						  		<option value="37">37</option>
+						  		<option value="39">39</option>
 						  		<option value="40">40</option>
 						  		<option value="48">48</option>
 							</select>
