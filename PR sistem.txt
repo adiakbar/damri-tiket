@@ -3,30 +3,31 @@ PR
 
 Pesan Tiket
 ===============
-1. Testing Printer
-2. Perbaiki Layout Bis Sambas
-3. Keluar tooltip penumpang
-4. kolom tempat tanggal lahir
+1. Format Tiket yang baru
 
 Data Pesanan
 ================
-1. Dipisahkan antara penumpan yang booking dengan penumpang yang cash pake tab
-2. Export ke PDF data penumpang yang berangkat
+1. Bisa edit, pindah kursi, pindah hari, pindah bis
 
 Trayek (create, update, delete) == Root
 ==============
 
 Unit Bis
 ==============
+1. Tetapkan BIS, juga menetapkan supir
+2. Tidak ada hapus bis, yang ada disable bis
+3. Ketika menetapkan bis, hitung jumlah tiket yang sudah terjual
+	jika jumlah kursi bis baru < jumlah tiket terjual, kasi pesan gagal
 
+Log
+=======
+1. Log Tiket
+2. Log Petugas
+3. Log Aktivitas
 
 Petugas
 ==============
-1. Tidak bisa update password
-
-Log
-==============
-1. Log Aktifitas Bis
+1. Upload Foto
 
 
 V2 (Untuk Startup)
