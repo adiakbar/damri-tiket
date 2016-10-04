@@ -154,10 +154,12 @@ class TiketController extends Controller
           // Log
           DB::table('log_pesanan')->insert(array(
                     'petugas' => Auth::user()->petugas,
-                    'aktivitas' => 'Booking tiket atas nama '.$penumpang.' dengan nomor kursi '.$kursi.' untuk tanggal '.\App\Convert::TanggalIndo($tanggal),
+                    'aktivitas' => 'Booking tiket atas nama '.$penumpang.' dengan nomor kursi '.$kursi,
+                    'tanggal' => $tanggal,
                     'jenis_bis_trayek_id' => $jenis_bis_trayek_id
           ));
         }
+        
             
         $pesanan = Pesanan::where('tanggal', '=', $tanggal)
                           ->where('jenis_bis_trayek_id', '=', $jenis_bis_trayek_id)
@@ -225,6 +227,14 @@ class TiketController extends Controller
           $pesan->status = 'cash';
           $pesan->save();
 
+          DB::table('log_pesanan')->insert(array(
+              'petugas' => Auth::user()->petugas,
+              'aktivitas' => 'Menerima pembayaran tiket atas nama '.$pesan->penumpang.' dengan nomor kursi '.$pesan->nomor_kursi,
+              'numeratur' => $numeratur.'/'.$alias_asal.'/'.$alias_tujuan.'/'.$tahun,
+              'tanggal' => $pesan->tanggal,
+              'jenis_bis_trayek_id' => $pesan->jenis_bis_trayek_id
+          ));
+
           $data[] = array('id' => $id, 'numeratur' => $numeratur.'/'.$alias_asal.'/'.$alias_tujuan.'/'.$tahun, 'status' => 'Lunas');
         }
         elseif($pesan->status == 'cash')
@@ -232,7 +242,7 @@ class TiketController extends Controller
           $data[] = array('id' => $id, 'numeratur' => $pesan->numeratur, 'status' => 'Lunas');
         }
       }
-
+      
       return response()->json($data);
     }
 
@@ -341,11 +351,13 @@ class TiketController extends Controller
             // Log
             DB::table('log_pesanan')->insert(array(
                     'petugas' => Auth::user()->petugas,
-                    'aktivitas' => 'Membatalkan tiket atas nama '.$pesan->penumpang.' dengan nomor kursi '.$pesan->kursi.' untuk tanggal '.\App\Convert::TanggalIndo($pesan->tanggal),
+                    'aktivitas' => 'Membatalkan tiket atas nama '.$pesan->penumpang.' dengan nomor kursi '.$pesan->nomor_kursi,
+                    'tanggal' => $pesan->tanggal,
+                    'numeratur' => $pesan->numeratur,
                     'jenis_bis_trayek_id' => $pesan->jenis_bis_trayek_id
                 ));
         }
-
+        
         return back();
     }
 
@@ -367,10 +379,11 @@ class TiketController extends Controller
 
       DB::table('log_pesanan')->insert(array(
                 'petugas' => Auth::user()->petugas,
-                'aktivitas' => 'Edit tiket atas nama '.$request->penumpang.' dengan nomor kursi '.$request->kursi.' untuk tanggal '.\App\Convert::TanggalIndo($request->tanggal),
+                'aktivitas' => 'Edit tiket atas nama '.$request->penumpang.' dengan nomor kursi '.$request->nomor_kursi,
+                'tanggal' => $request->tanggal,
                 'jenis_bis_trayek_id' => $request->jenis_bis_trayek_id
       ));
-
+      
       return redirect('pesanan?tanggal='.\App\Convert::tgl_eng_to_ind($request->tanggal).'&kode_trayek='.$request->kode_trayek.'&_token='.csrf_token());
     }
 

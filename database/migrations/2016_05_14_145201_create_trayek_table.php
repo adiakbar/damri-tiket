@@ -14,13 +14,12 @@ class CreateTrayekTable extends Migration
     {
         Schema::create('trayek', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('asal', 100);
-            $table->string('tujuan', 100);
-            $table->string('alias_asal', 100);
-            $table->string('alias_tujuan', 100);
-            $table->string('alias', 100);
-            $table->string('slug_alias', 100)->index();
-            $table->timestamp('created_at');
+            $table->string('asal')->nullable();
+            $table->string('tujuan')->nullable();
+            $table->string('alias_asal')->nullable();
+            $table->string('alias_tujuan')->nullable();
+            $table->string('alias')->nullable();
+            $table->string('slug_alias')->nullable();
         });
     }
 

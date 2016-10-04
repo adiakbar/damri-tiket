@@ -11,8 +11,6 @@
 |
 */
 
-// Authentication routes...
-// Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
@@ -61,24 +59,4 @@ Route::group(['middleware' => 'auth'], function() {
 	
 	Route::get('log-administrasi', 'LogController@logAdministrasi');
 
-	
 });
-
-Route::get('tes-pdf', function() {
-	$pdf = App::make('dompdf.wrapper');
-	$pdf->loadHTML('<h1>Test</h1>');
-	return $pdf->stream();
-});
-
-// Route::get('daftar', function() {
-// 	$data = [
-// 		'petugas' => 'petugas1',
-// 		'username' => 'petugas1',
-// 		'password' => bcrypt('sajamantap'),
-// 		'email' => 'petugas1@tiketdamriptk.com',
-// 		'level' => 'petugas'
-// 			];
-
-// 	\App\User::create($data);
-// 	echo 'user telah di buat';
-// });

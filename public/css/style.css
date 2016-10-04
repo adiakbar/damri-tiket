@@ -247,6 +247,104 @@ a:hover {
 	left: 50%;
 	top: 100px;
 }
+
+@media print {
+.table-etiket {
+	border: border-collapse: collapse;
+	margin-bottom: 45px;
+	font-size: 10px;
+	width: 100%;
+}
+.table-etiket, 
+.table-etiket th, 
+.table-etiket td {
+    border: 1px solid black;
+    padding: 3px 5px;
+}
+.etiket-logo  img{
+	width: 30px;
+	float: right;
+}
+.etiket-title {
+	float: left;
+	font-weight: bold;
+}
+.etiket-title h4,
+.etiket-title p {
+	margin: 0;
+}
+.etiket-span {
+	float: left;
+	/*width: 150px;*/
+	line-height: 10px;
+}
+.etiket-span span {
+	font-size: 8px;
+}
+td.etiket-rotate {
+	white-space: nowrap;
+	vertical-align: bottom;
+	width: 80px;
+}
+td.etiket-rotate div{
+	transform: 
+    rotate(-90deg);
+  width: 10px;
+  font-size: 16px;
+  margin-left: 30px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+.etiket-list-keterangan {
+	font-size: 8px;
+	margin-bottom: 0px;
+	padding-left: 10px;
+}
+.title-trayek {
+	font-weight: 600;
+	font-size: 14px;
+	background: #3498db;
+	display: inline;
+	color: #fff;
+	padding: 5px 10px;
+	margin-bottom: 10px;
+}
+.text-numeratur {
+	text-align: center;
+	font-weight: 700;
+	font-size: 16px;
+	text-decoration: underline;
+}
+.box-detail-bis {
+	outline: 1px solid #000; 
+	width: 150px; 
+	margin: 0 auto; 
+	text-align:center;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+.etiket-text-nomor-bis {
+	font-size: 30px;
+	line-height: 30px;
+}
+.etiket-text-jenis-bis,
+.etiket-text-kursi {
+	font-size: 16px;
+	font-weight: 700;
+}
+.text-keterangan {
+	font-size: 12px;
+	text-align: center;
+}
+}
+/* Cetak E-Tiket */
+
+
+.box-tiket-cetak {
+	width: 300px;
+	margin-bottom: 25px;
+	outline: 1px solid red;
+}
 .title-trayek {
 	font-weight: 600;
 	font-size: 16px;
@@ -292,19 +390,14 @@ a:hover {
 	font-size: 40px;
 	line-height: 40px;
 }
-.text-jenis-bis {
+.text-jenis-bis,
+.text-kursi {
 	font-size: 18px;
 	font-weight: 700;
 }
 .text-keterangan {
 	font-size: 12px;
 	text-align: center;
-}
-
-.box-tiket-cetak {
-	width: 300px;
-	margin-bottom: 25px;
-	/*outline: 1px solid red;*/
 }
 .form-inline .form-group {
 	margin-right: 10px;

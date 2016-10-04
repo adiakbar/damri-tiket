@@ -16,7 +16,6 @@ class CreateJenisBisTable extends Migration
             $table->increments('id');
             $table->string('jenis', 50);
             $table->string('slug_jenis', 50);
-            $table->timestamp('created_at');
         });
     }
 

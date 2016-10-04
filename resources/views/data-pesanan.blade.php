@@ -9,9 +9,6 @@
 </div>
 
 <h2 class="content-title">Data Pesanan</h2>
-@if(isset($pesanan))
-
-@endif
 
 	<div class="row">
 		<div class="col-md-8">
@@ -32,7 +29,7 @@
 
 				 	<div class="form-group">
 				 		<label for="" style="display:block">Tanggal</label>
-				 		<input type="text" name="tanggal" class="form-control" data-provide="datepicker" data-date-format="dd-mm-yyyy" placeholder="Tanggal Berangkat" required="">
+				 		<input type="text" name="tanggal" class="form-control datepicker" placeholder="Tanggal Berangkat" required="">
 				 	</div>
 
 				  <input type="submit" class="btn btn-primary" value="Lihat Pesanan" style="margin-top: 25px;">
@@ -83,41 +80,44 @@
 				</form>
 				@foreach($pnpBooking as $bus => $Penumpang)
 				<h3 class="bus-title" style="border-bottom:none;">{{$bus}}</h3>
-				<table class="table" style="font-size:13px;">
-					<thead>
-						<th style="width: 10px;">No</th>
-						<th style="width: 10px;">Kursi</th>
-						<th>Nama</th>
-						<th>Telepon</th>
-						<th>Domisili Asal</th>
-						<th>Domisili Tujuan</th>
-						<th>Passport</th>
-						<th>Masa Berlaku</th>
-						<th>Keterangan</th>
-						<th>Petugas</th>
-						<th></th>
-					</thead>
-					<tbody>
-						@foreach($Penumpang as $key => $penumpang)
-						<tr class="tr-click">
-							<td>{{ $key + 1 }}</td>
-							<td>{{ $penumpang->nomor_kursi }}</td>
-							<td>{{ $penumpang->penumpang }}</td>
-							<td>{{ $penumpang->telephone }}</td>
-							<td>{{ $penumpang->domisili_asal }}</td>
-							<td>{{ $penumpang->domisili_tujuan }}</td>
-							<td>{{ ($penumpang->passport == '' ? '-' : $penumpang->passport) }}</td>
-							<td>{{ ($penumpang->masa_berlaku == '' ? '-' : $penumpang->masa_berlaku) }}</td>
-							<td>{{ ($penumpang->keterangan == '' ? '-' : $penumpang->keterangan) }}</td>
-							<td>{{ $penumpang->petugas->petugas }}</td>
-							<td>
-								<input type="checkbox" value="{{ $penumpang->id }}" name="pesanan[]" style="display:none;">
-								<a href="{{ url('/edit-tiket?pesanan_id='.$penumpang->id) }}">Edit</a>
-							</td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
+				<div class="table-responsive" style="width: 100%;">
+					<table class="table" style="font-size:13px;">
+						<thead>
+							<th style="width: 10px;">No</th>
+							<th style="width: 10px;">Kursi</th>
+							<th>Nama</th>
+							<th>Telepon</th>
+							<th>Domisili Asal</th>
+							<th>Domisili Tujuan</th>
+							<th>Passport</th>
+							<th>Masa Berlaku</th>
+							<th>Keterangan</th>
+							<th>Petugas</th>
+							<th></th>
+						</thead>
+						<tbody>
+							@foreach($Penumpang as $key => $penumpang)
+							<tr class="tr-click">
+								<td>{{ $key + 1 }}</td>
+								<td>{{ $penumpang->nomor_kursi }}</td>
+								<td>{{ $penumpang->penumpang }}</td>
+								<td>{{ $penumpang->telephone }}</td>
+								<td>{{ $penumpang->domisili_asal }}</td>
+								<td>{{ $penumpang->domisili_tujuan }}</td>
+								<td>{{ ($penumpang->passport == '' ? '-' : $penumpang->passport) }}</td>
+								<td>{{ ($penumpang->masa_berlaku == '' ? '-' : $penumpang->masa_berlaku) }}</td>
+								<td>{{ ($penumpang->keterangan == '' ? '-' : $penumpang->keterangan) }}</td>
+								<td>{{ $penumpang->petugas->petugas }}</td>
+								<td>
+									<input type="checkbox" value="{{ $penumpang->id }}" name="pesanan[]" style="display:none;">
+									<a href="{{ url('/edit-tiket?pesanan_id='.$penumpang->id) }}">Edit</a>
+								</td>
+							</tr>
+							@endforeach
+						</tbody>
+					</table>
+				</div>
+				
 				@endforeach
 			</div>
 			
@@ -135,56 +135,59 @@
 				@foreach($pnpCash as $bus => $Penumpang)
 				<h3 class="bus-title" style="border-bottom:none;">{{$bus}}</h3>
 				<a href="{{ url('pesanan-export?tanggal='.$tanggal.'&kode_trayek='.$data_trayek->kode_trayek.'&nomor_bis_link='.$bus) }}" target="_blank"> Cetak AP/3 Per Bis</a>
-				<table class="table table-bordered" style="font-size:13px;">
-					<thead>
-						<tr>
-							<th style="width: 10px;" rowspan="2">No</th>
-							<th style="width: 10px;" rowspan="2">No. Tiket</th>
-							<th rowspan="2">Nama Penumpang</th>
-							<th rowspan="2">No. Telepon</th>
-							<th colspan="2">Tujuan</th>
-							<th rowspan="2">Kursi</th>
-							<th colspan="3">Pendapatan Angkutan</th>
-							<th rowspan="2" style="width: 10px;">Biaya Operasional / Transit</th>
-							<th rowspan="2">Keterangan</th>
-							<th rowspan="2">Petugas</th>
-						</tr>
-						<tr>
-							<th>Dari</th>
-							<th>Ke</th>
-							<th>Bagasi</th>
-							<th>Penumpang</th>
-							<th>Jumlah</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($Penumpang as $key => $penumpang)
-						<tr class="tr-click">
-							<td>{{ $key + 1 }}</td>
-							<td>{{ $penumpang->numeratur }}</td>
-							<td>{{ $penumpang->penumpang }}</td>
-							<td>{{ $penumpang->telephone }}</td>
-							<td>{{ $penumpang->jenis_bis_trayek->stasiun_asal }}</td>
-							<td>{{ $penumpang->jenis_bis_trayek->stasiun_tujuan }}</td>
-							<td>{{ $penumpang->nomor_kursi }}</td>
-							<td>-</td>
-							<td>{{ "Rp ".number_format($penumpang->jenis_bis_trayek->harga,0,',','.') }}</td>
-							<td>-</td>
-							<td>-</td>
-							<td>{{ ($penumpang->keterangan == '' ? '-' : $penumpang->keterangan) }}</td>
-							<td>{{ $penumpang->petugas->petugas }}</td>
-							<td>
-								<input type="checkbox" value="{{ $penumpang->id }}" name="pesanan[]" style="display:none;">
-								<a href="{{ url('/edit-tiket?pesanan_id='.$penumpang->id) }}">Edit</a>
-							</td>
-						</tr>
-						@endforeach
-						<tr>
-							<td colspan="8">Jumlah</td>
-							<td colspan="5">{{ "Rp ".number_format($jmlHarga[$bus],0,',','.') }}</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="table-responsive" style="width: 100%;">
+					<table class="table table-bordered" style="font-size:13px;">
+						<thead>
+							<tr>
+								<th style="width: 10px;" rowspan="2">No</th>
+								<th style="width: 10px;" rowspan="2">No. Tiket</th>
+								<th rowspan="2">Nama Penumpang</th>
+								<th rowspan="2">No. Telepon</th>
+								<th colspan="2">Tujuan</th>
+								<th rowspan="2">Kursi</th>
+								<th colspan="3">Pendapatan Angkutan</th>
+								<th rowspan="2" style="width: 10px;">Biaya Operasional / Transit</th>
+								<th rowspan="2">Keterangan</th>
+								<th rowspan="2">Petugas</th>
+							</tr>
+							<tr>
+								<th>Dari</th>
+								<th>Ke</th>
+								<th>Bagasi</th>
+								<th>Penumpang</th>
+								<th>Jumlah</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($Penumpang as $key => $penumpang)
+							<tr class="tr-click">
+								<td>{{ $key + 1 }}</td>
+								<td>{{ $penumpang->numeratur }}</td>
+								<td>{{ $penumpang->penumpang }}</td>
+								<td>{{ $penumpang->telephone }}</td>
+								<td>{{ $penumpang->jenis_bis_trayek->stasiun_asal }}</td>
+								<td>{{ $penumpang->jenis_bis_trayek->stasiun_tujuan }}</td>
+								<td>{{ $penumpang->nomor_kursi }}</td>
+								<td>-</td>
+								<td>{{ "Rp ".number_format($penumpang->jenis_bis_trayek->harga,0,',','.') }}</td>
+								<td>-</td>
+								<td>-</td>
+								<td>{{ ($penumpang->keterangan == '' ? '-' : $penumpang->keterangan) }}</td>
+								<td>{{ $penumpang->petugas->petugas }}</td>
+								<td>
+									<input type="checkbox" value="{{ $penumpang->id }}" name="pesanan[]" style="display:none;">
+									<a href="{{ url('/edit-tiket?pesanan_id='.$penumpang->id) }}">Edit</a>
+								</td>
+							</tr>
+							@endforeach
+							<tr>
+								<td colspan="8">Jumlah</td>
+								<td colspan="5">{{ "Rp ".number_format($jmlHarga[$bus],0,',','.') }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
 				@endforeach
 			</div>
 		</div>
@@ -201,7 +204,13 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 
-	
+		$('.datepicker').datepicker({
+		    format: 'dd-mm-yyyy',
+		    autoclose: true,
+		    @if(Auth::user()->level != 'superadmin')
+		    startDate: 'd'
+		    @endif
+		});
 
 		$('.table-pesanan').DataTable({"iDisplayLength": 100});
 

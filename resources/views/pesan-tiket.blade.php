@@ -13,7 +13,7 @@
 			<form>
 				<div class="form-group">
 			    <label for="">Tanggal : </label>
-			    <input type="text" name="tanggal" class="form-control" data-provide="datepicker" data-date-format="dd-mm-yyyy" placeholder="Tanggal Berangkat" required="">
+			    <input type="text" name="tanggal" class="form-control datepicker" placeholder="Tanggal Berangkat" required="">
 			  </div>
 				<div class="form-group">
 			    <label for="">Trayek : </label>
@@ -201,6 +201,12 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+
+		$('.datepicker').datepicker({
+		    format: 'dd-mm-yyyy',
+		    autoclose: true,
+		    startDate: 'd'
+		});
 
 		var trayek = <?php echo($trayek); ?>
 
