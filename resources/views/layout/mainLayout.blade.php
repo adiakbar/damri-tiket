@@ -67,7 +67,7 @@
 			@endif
 			@if(Auth::user()->level == 'petugas')
 			<li @if($menu == 'log') class="active" @endif>
-				<a href="{{ url('log-petugas/detail/'.Auth::user()->id) }}" class="sidebar-list-link">
+				<a href="{{ url('log-petugas-harian/detail/'.Auth::user()->id) }}" class="sidebar-list-link">
 					<i class="fa fa-th-large sidebar-list-icon"></i>
 					<div class="sidebar-list-title">Log</div>
 				</a>
