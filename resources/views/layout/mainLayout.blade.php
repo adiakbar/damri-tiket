@@ -65,12 +65,31 @@
 				</a>
 			</li>
 			@endif
+			@if(Auth::user()->level == 'petugas')
+			<li @if($menu == 'log') class="active" @endif>
+				<a href="{{ url('log-petugas/detail/'.Auth::user()->id) }}" class="sidebar-list-link">
+					<i class="fa fa-th-large sidebar-list-icon"></i>
+					<div class="sidebar-list-title">Log</div>
+				</a>
+			</li>
+			@endif
+
+			@if(Auth::user()->level == 'kasir')
+			<li @if($menu == 'log') class="active" @endif>
+				<a href="{{ url('log-pesanan') }}" class="sidebar-list-link">
+					<i class="fa fa-th-large sidebar-list-icon"></i>
+					<div class="sidebar-list-title">Log</div>
+				</a>
+			</li>
+			@endif
 			<li>
 				<a href="{{ url('auth/logout') }}" class="sidebar-list-link">
 					<i class="fa fa-sign-out sidebar-list-icon"></i>
 					<div class="sidebar-list-title">Keluar</div>
 				</a>
 			</li>
+
+
 		</ul>	
 	</div>
 	<!-- end-sidebar	 -->
@@ -79,7 +98,7 @@
 	<header id="header">
 		<!-- box-logo -->
 		<div class="box-logo">
-        <img class="box-logo-image" src="img/damri-logo.png">
+        <img class="box-logo-image" src="{{ url('img/damri-logo.png') }}">
         <h1 class="box-logo-title">Perum Damri Kantor Cab. Pontianak</h1>
         <h2 class="box-logo-title">Kalimantan Barat</h2>
         <p class="box-logo-caption">Damri Online System</p>
