@@ -66,4 +66,68 @@ class LogController extends Controller
         //         ->get();
         // return Datatables::of($log)->make(true);
     }
+
+    public function logPetugas(Request $request)
+    {
+        $data['menu'] = 'log';
+
+        $tanggal = date('Y-m-d');
+
+        if(isset($request->tanggal) AND $request->tanggal != '')
+        {
+            $tanggalConvert = \App\Convert::tgl_ind_to_eng($request->tanggal);
+            $tanggal = $tanggalConvert;
+        }
+
+        $data['tanggal'] = \App\Convert::tgl_eng_to_ind($tanggal);  
+        $data['jml_tiket'] = DB::select(
+                                "SELECT petugas.id, petugas, COUNT(penumpang) as total, SUM(harga) as jumlah
+                                 FROM petugas
+                                 LEFT JOIN
+                                    (SELECT petugas_id, penumpang, jenis_bis_trayek_id
+                                     FROM pesanan
+                                     WHERE tanggal = '$tanggal'
+                                     AND status = 'cash')
+                                 AS jmlPenumpang
+                                 ON petugas.id = jmlPenumpang.petugas_id
+                                 LEFT JOIN jenis_bis_trayek
+                                 ON jmlPenumpang.jenis_bis_trayek_id = jenis_bis_trayek.id
+                                 WHERE petugas.id != 1
+                                 GROUP BY petugas                   
+                                 ORDER BY petugas.id");
+
+        
+        return view('log.log-petugas', $data);
+    }
+
+    public function logPetugasDetail(Request $request, $id)
+    {
+        $data['menu'] = 'log';
+
+        $tanggal = date('Y-m-d');
+
+        if(isset($request->tanggal) AND $request->tanggal != '')
+        {
+            $tanggalConvert = \App\Convert::tgl_ind_to_eng($request->tanggal);
+            $tanggal = $tanggalConvert;
+        }
+
+        $data['tanggal'] = \App\Convert::tgl_eng_to_ind($tanggal);
+        $data['detail'] = \App\Pesanan::where('petugas_id', $id)
+                                        ->where('tanggal', $tanggal)
+                                        ->where('status', 'cash')
+                                        ->get();
+        $data['jumlah'] = DB::select("SELECT count(penumpang) as total, sum(harga) as jumlah
+                                        FROM pesanan
+                                        
+                                     LEFT JOIN jenis_bis_trayek
+                                     ON pesanan.jenis_bis_trayek_id = jenis_bis_trayek.id
+                                     WHERE tanggal = '$tanggal'
+                                     AND status = 'cash'
+                                     AND petugas_id = '$id'");
+
+        $data['profil'] = \App\User::find($id);
+
+        return view('log.log-petugas-detail', $data);
+    }
 }
