@@ -59,6 +59,9 @@ Route::group(['middleware' => 'auth'], function() {
 
 	Route::get('log-petugas',  'LogController@logPetugas');
 	Route::get('log-petugas/detail/{id}', 'LogController@logPetugasDetail');
+
+	Route::get('log-petugas-harian', 'LogController@logPetugasHarian');
+	Route::get('log-petugas-harian/detail/{id}', 'LogController@logPetugasHarianDetail');
 	
 	Route::get('log-administrasi', 'LogController@logAdministrasi');
 
