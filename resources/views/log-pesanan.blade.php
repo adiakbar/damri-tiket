@@ -3,6 +3,8 @@
 @section('content')
 
 <h2 class="content-title">Log Tiket</h2>
+<a href="{{ url('log-pesanan') }}" style="font-size:12px;">Log Tiket</a> |
+<a href="{{ url('log-petugas') }}" style="font-size:12px;">Log Petugas</a>
 
 <div class="box-content">
 	<form action="" method="GET" role="form">
@@ -33,9 +35,12 @@
 		
 		</div>
 		
-		
 	</form>
 	<br>
+
+</div>
+
+<div class="box-content">
 	<div class="table-responsive">
 		<table class="table table-hover" id="table-log" style="font-size:12px;">
 			<thead>
@@ -68,14 +73,16 @@
 			</tbody>
 		</table>
 	</div>
-	
 </div>
 
 @endsection
 
 @section('script')
 <script type="text/javascript">
-	$('#table-log').DataTable({"iDisplayLength": 100});
+	$('#table-log').DataTable({
+		"iDisplayLength": 100,
+		"order": []
+	});
 
 	$('.datepicker').datepicker({
 	    format: 'dd-mm-yyyy',
