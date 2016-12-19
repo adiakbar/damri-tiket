@@ -35,6 +35,7 @@
 					<select name="level" id="" class="form-control">
 						<option value="petugas">Petugas</option>
 						<option value="admin">Admin</option>
+						<option value="kasir">Kasir</option>
 						<option value="manager">Manager</option>
 						<option value="superadmin">Superadmin</option>
 					</select>
