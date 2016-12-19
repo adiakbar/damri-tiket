@@ -5,6 +5,7 @@
 <h2 class="content-title">Log Tiket</h2>
 <a href="{{ url('log-pesanan') }}" style="font-size:12px;">Log Tiket</a> |
 <a href="{{ url('log-petugas') }}" style="font-size:12px;">Log Petugas</a>
+<a href="{{ url('log-petugas-harian') }}" style="font-size:12px;">Log Petugas Harian</a>
 
 <div class="box-content">
 	<form action="" method="GET" role="form">

@@ -6,6 +6,7 @@
 @if(Auth::user()->level == 'superadmin' || Auth::user()->level == 'root' || Auth::user()->level == 'kasir')
 <a href="{{ url('log-pesanan') }}" style="font-size:12px;">Log Tiket</a> |
 <a href="{{ url('log-petugas') }}" style="font-size:12px;">Log Petugas</a>
+<a href="{{ url('log-petugas-harian') }}" style="font-size:12px;">Log Petugas Harian</a>
 @endif
 <div class="box-content">
 	<form action="" method="GET" role="form">
