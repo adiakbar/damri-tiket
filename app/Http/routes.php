@@ -66,3 +66,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('log-administrasi', 'LogController@logAdministrasi');
 
 });
+
+Route::get('test-print-tiket', function() {
+	return view('print.tiket');
+});
