@@ -12,8 +12,7 @@ Untuk sementara proses instalasi masih sederhana karena belum selesai konfiguras
 
 ## Developer
 
-1. M. Adi Akbar (muh.adyakbar@gmail.com)
-
+1. M. Adi Akbar (adiakbar@outlook.co.id)
 
 ### License
 
